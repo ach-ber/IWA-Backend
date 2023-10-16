@@ -1,0 +1,19 @@
+{
+  "name": "iwa-candidate-api",
+  "version": "1.0.0",
+  "description": "Candidate API for IWA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Océan Sicard--Baux",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

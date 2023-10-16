@@ -1,0 +1,13 @@
+[
+	email1: { 		
+		firstname:"...", lastname:"...",	
+		gender:0|1|2|9, birthDate:"...", citizenship: "...",	
+		address: {streetNum:..., street:"...", complement:"...", zipCode:"...", city:"...", country:"..."},	
+		email: "...", phone: "...", photo:..., cv:"<URL>", shortBio: "...",	
+		references: [{refName: "...", refEstablishment:"...", refAddress: {<Address>}, refPhone:"", refEmail:""}, ...],	
+		experiences: [{job: "...", jobCategory:"...", startedAt: "...", endedAt: "...", establishment: {establishmentName:"",establishmentAddress:{<Address>}}, ...]	
+		availabilities: [{job:"...", jobCategory:"...", startsAt: "...", endsAt: "...", places:["...","..."]}, ...],	
+		opinions: [{score: <Number>, message:"...", employerId: <ID>, providedAt: <Date>}]	
+	},		
+	email2: {...}		
+]
