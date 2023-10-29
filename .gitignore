@@ -132,3 +132,5 @@ dist
 ## custom
 **.pyc
 fake_candidates.json
+
+.idea/
