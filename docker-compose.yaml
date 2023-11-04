@@ -47,6 +47,32 @@ services:
     depends_on:
       - psql-db
       - eureka
+  recruiter-service:
+    container_name: service-reruiter
+    build:
+      context: ./iwa-backend
+      dockerfile: Dockerfile
+    ports:
+      - '8301:8301'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pgAdmin:5050/recruiterService
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - pgAdmin
+      - eureka
+
+  pgAdmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
 
 networks:
   gateway-network:
