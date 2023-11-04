@@ -13,3 +13,16 @@ Dossier repo :
 Dossier controller :
 - Créer un dossier controller
 - Créer un fichier UserController.java
+
+## SQL import/export
+
+```bash
+# dump data from recruiterService database, 
+docker exec -i iwa-backend_db_1 pg_dump -U postgres recruiterService > dump.sql
+
+# remove current data (stored in recruiterService database)
+docker exec -it iwa-backend_db_1 dropdb -U postgres recruiterService
+
+# import dumped data
+cat dump.sql | docker exec -i iwa-backend_db_1 psql -U postgres
+```

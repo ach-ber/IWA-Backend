@@ -10,6 +10,8 @@ services:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: recruiterService
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   pgAdmin:
     image: dpage/pgadmin4:latest
