@@ -22,14 +22,14 @@ public class Job {
 
     private Float salary;
 
-    private Integer category_key;
+    private Long category_key;
 
-    private Integer establishment_key;
+    private Long establishment_key;
 
     public Job(){
     }
 
-    public Job(Long id, String name, Long startDate, Long endDate, String perks, Float salary, Integer category_key, Integer establishment_key) {
+    public Job(Long id, String name, Long startDate, Long endDate, String perks, Float salary, Long category_key, Long establishment_key) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
@@ -40,7 +40,7 @@ public class Job {
         this.establishment_key = establishment_key;
     }
 
-    public Job(String name, Long startDate, Long endDate, String perks, Float salary, Integer category_key, Integer establishment_key) {
+    public Job(String name, Long startDate, Long endDate, String perks, Float salary, Long category_key, Long establishment_key) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -98,19 +98,19 @@ public class Job {
         this.salary = salary;
     }
 
-    public Integer getCategory_key() {
+    public Long getCategory_key() {
         return category_key;
     }
 
-    public void setCategory_key(Integer category_key) {
+    public void setCategory_key(Long category_key) {
         this.category_key = category_key;
     }
 
-    public Integer getEstablishment_key() {
+    public Long getEstablishment_key() {
         return establishment_key;
     }
 
-    public void setEstablishment_key(Integer establishment_key) {
+    public void setEstablishment_key(Long establishment_key) {
         this.establishment_key = establishment_key;
     }
 }

@@ -22,15 +22,11 @@ public class JobController {
         return service.getJobs();
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping(value = "{id}")
     public ResponseEntity<Job> getJob(@PathVariable Long id) {
-        final Optional<Job> job = service.getById(id);
-        if (job.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(job.get());
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+        return service.getById(id)
+                .map(job -> ResponseEntity.status(HttpStatus.OK).body(job))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
@@ -39,7 +35,7 @@ public class JobController {
         return service.createJob(job);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "{id}")
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
     }
