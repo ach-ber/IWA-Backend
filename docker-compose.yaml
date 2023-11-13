@@ -47,6 +47,34 @@ services:
     depends_on:
       - psql-db
       - eureka
+  psql-db-jobservice:
+    image: postgres
+    container_name: psql-db-jobservice
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=job
+    ports:
+      - '5433:5432'
+    networks:
+      - gateway-network
+  service-job:
+    container_name: service-job
+    build:
+      context: ./service-job
+      dockerfile: Dockerfile
+    ports:
+      - '8301:8301'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-jobservice:5432/job
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-jobservice
+      - eureka
 
 networks:
   gateway-network:

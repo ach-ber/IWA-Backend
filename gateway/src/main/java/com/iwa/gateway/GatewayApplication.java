@@ -15,6 +15,7 @@ public class GatewayApplication {
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route("service-test", r->r.path("/test/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-TEST"))
+				.route("service-job", r->r.path("/job/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-JOB"))
 				.build();
 	}
 	public static void main(String[] args) {
