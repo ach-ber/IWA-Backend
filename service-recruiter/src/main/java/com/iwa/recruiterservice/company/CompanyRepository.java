@@ -1,8 +1,8 @@
-package com.iwa.recruiterservice.recipe;
+package com.iwa.recruiterservice.company;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 }

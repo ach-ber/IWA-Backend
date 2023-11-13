@@ -1,16 +1,9 @@
 package com.iwa.recruiterservice.init;
 
-import com.iwa.recruiterservice.chef.Chef;
-import com.iwa.recruiterservice.chef.ChefService;
-import com.iwa.recruiterservice.recipe.Recipe;
 import com.iwa.recruiterservice.recruiter.Recruiter;
 import com.iwa.recruiterservice.recruiter.RecruiterService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
