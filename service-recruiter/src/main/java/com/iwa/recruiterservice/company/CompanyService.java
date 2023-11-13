@@ -30,7 +30,24 @@ public class CompanyService {
         return this.companyRepository.findById(id).orElse(null);
     }
 
-    public void deleteCompanyById(Long id){
-        this.companyRepository.deleteById(id);
+    @Transactional
+    public boolean deleteCompanyById(Long id){
+        if (this.companyRepository.existsById(id)) {
+            companyRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Company updateCompany(Long id, Company updatedCompany) {
+        Company existingCompany = companyRepository.findById(id).orElse(null);
+
+        if (existingCompany != null) {
+            updatedCompany.setId(id);
+            return companyRepository.save(updatedCompany);
+        } else {
+            return null;
+        }
     }
 }

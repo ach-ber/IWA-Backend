@@ -31,8 +31,24 @@ public class RecruiterService {
         return this.recruiterRepository.findById(id).orElse(null);
     }
 
-    public void deleteRecruiterById(Long id){
-        this.recruiterRepository.deleteById(id);
+    @Transactional
+    public boolean deleteRecruiterById(Long id){
+        if (recruiterRepository.existsById(id)) {
+            recruiterRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
+    @Transactional
+    public Recruiter updateRecruiter(Long id, Recruiter updatedRecruiter) {
+        Recruiter existingRecruiter = recruiterRepository.findById(id).orElse(null);
+
+        if (existingRecruiter != null) {
+            updatedRecruiter.setId(id);
+            return recruiterRepository.save(updatedRecruiter);
+        } else {
+            return null;
+        }
+    }
 }

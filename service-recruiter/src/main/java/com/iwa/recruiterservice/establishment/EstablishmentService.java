@@ -31,7 +31,24 @@ public class EstablishmentService {
         return this.establishmentRepository.findById(id).orElse(null);
     }
 
-    public void deleteEstablishmentById(Long id){
-        this.establishmentRepository.deleteById(id);
+    @Transactional
+    public boolean deleteEstablishmentById(Long id){
+        if (establishmentRepository.existsById(id)) {
+            establishmentRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Establishment updateEstablishment(Long id, Establishment updatedEstablishment) {
+        Establishment existingEstablishment = establishmentRepository.findById(id).orElse(null);
+
+        if (existingEstablishment != null) {
+            updatedEstablishment.setId(id);
+            return establishmentRepository.save(updatedEstablishment);
+        } else {
+            return null;
+        }
     }
 }

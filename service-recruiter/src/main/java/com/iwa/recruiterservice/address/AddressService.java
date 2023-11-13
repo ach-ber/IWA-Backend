@@ -30,7 +30,24 @@ public class AddressService {
         return this.addressRepository.findById(id).orElse(null);
     }
 
-    public void deleteAddressById(Long id){
-        this.addressRepository.deleteById(id);
+    @Transactional
+    public boolean deleteAddressById(Long id) {
+        if (addressRepository.existsById(id)) {
+            addressRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Address updateAddress(Long id, Address updatedAddress) {
+        Address existingAddress = addressRepository.findById(id).orElse(null);
+
+        if (existingAddress != null) {
+            updatedAddress.setId(id);
+            return addressRepository.save(updatedAddress);
+        } else {
+            return null;
+        }
     }
 }

@@ -1,9 +1,8 @@
 package com.iwa.recruiterservice.address;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +21,45 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public Address getAddressById(@PathVariable Long id) {
-        return service.getAddressById(id);
+    public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
+        Address res = service.getAddressById(id);
+        if (res != null) {
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<Address> createAddress(@RequestBody Address newAddress) {
+        Address result = service.createAddress(newAddress);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Address> updateAddress(@PathVariable Long id, @RequestBody Address updatedAddress) {
+        Address result = service.updateAddress(id, updatedAddress);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAddress(@PathVariable Long id) {
+        boolean deleted = service.deleteAddressById(id);
+
+        if (deleted) {
+            return new ResponseEntity<>("Address deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Address not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

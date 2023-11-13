@@ -1,9 +1,8 @@
 package com.iwa.recruiterservice.establishment;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +24,38 @@ public class EstablishmentController {
     @GetMapping("/{id}")
     public Establishment getEstablishmentById(@PathVariable Long id) {
         return service.getEstablishmentById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Establishment> createEstablishment(@RequestBody Establishment newEstablishment) {
+        Establishment result = service.createEstablishment(newEstablishment);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Establishment> updateEstablishment(@PathVariable Long id, @RequestBody Establishment updatedEstablishment) {
+        Establishment result = service.updateEstablishment(id, updatedEstablishment);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEstablishment(@PathVariable Long id) {
+        boolean deleted = service.deleteEstablishmentById(id);
+
+        if (deleted) {
+            return new ResponseEntity<>("Establishment deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Establishment not found", HttpStatus.NOT_FOUND);
+        }
     }
 }
