@@ -76,6 +76,35 @@ services:
       - psql-db-jobservice
       - eureka
 
+  psql-db-recruiterservice:
+    image: postgres
+    container_name: psql-db-recruiterservice
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=recruiter
+    ports:
+      - '5434:5432'
+    networks:
+      - gateway-network
+  service-recruiter:
+    container_name: service-recruiter
+    build:
+      context: ./service-recruiter
+      dockerfile: Dockerfile
+    ports:
+      - '8302:8302'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-recruiterservice:5432/recruiter
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-recruiterservice
+      - eureka
+
 networks:
   gateway-network:
     driver: bridge

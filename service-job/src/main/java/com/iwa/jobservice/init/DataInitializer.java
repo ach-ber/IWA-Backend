@@ -28,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
         String[] categoriesList = {
                 "Agriculture, Viticulture, Pêche",
                 "Hôtellerie de plein air, Club vacances, Camping, Animation",
-                "Hôtels, cafés, bars, restaurants",
+                "Hôtels, cafés, bars, restaurants, fast-foods",
                 "Evenementiel",
                 "Casinos, Parcs d'attraction",
                 "Administration, Espaces culturels, Tourisme",

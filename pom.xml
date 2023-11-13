@@ -19,6 +19,7 @@
 		<module>gateway</module>
 		<module>service-test</module>
 		<module>service-job</module>
+		<module>service-recruiter</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>
