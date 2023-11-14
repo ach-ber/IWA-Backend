@@ -44,7 +44,9 @@ public class DataInitializer implements CommandLineRunner {
                     "SPA, Esthétique, Coiffure",
                     "Autre"
             };
-
+            for (String category : categoriesList) {
+                jobcategoryService.createJobcategory(new Jobcategory(category));
+            }
             jobService.createJob(jobs);
         } else {
             System.out.println("Jobs already initialized");

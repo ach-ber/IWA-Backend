@@ -35,13 +35,9 @@ public class JobcategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Jobcategory> updateJobcategory(@PathVariable Long id, @RequestBody Jobcategory jobcategory) {
-        Jobcategory result = service.updateJobcategory(id, jobcategory);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.updateJobcategory(id, jobcategory)
+            .map(updatedJobcategory -> new ResponseEntity<>(updatedJobcategory, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")

@@ -45,12 +45,12 @@ public class RecruitmentService {
     }
 
     @Transactional
-    public Recruitment update(Long id, Recruitment updatedRecruitment) {
-        Recruitment existingRecruitment = repository.findById(id).orElse(null);
+    public Optional<Recruitment> update(Long id, Recruitment updatedRecruitment) {
+        Optional<Recruitment> existingRecruitment = repository.findById(id);
 
         if (existingRecruitment != null) {
             updatedRecruitment.setId(id);
-            return repository.save(updatedRecruitment);
+            return Optional.of(repository.save(updatedRecruitment));
         } else {
             return null;
         }

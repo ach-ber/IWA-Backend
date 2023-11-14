@@ -27,7 +27,7 @@ public class JobcategoryService {
     }
 
     @Transactional
-    public List<Jobcategory> createJobcategory(List<Jobcategory> list) {
+    public List<Jobcategory> createJobcategories(List<Jobcategory> list) {
         jobcategoryRepository.saveAll(list);
         return list;
     }
@@ -42,10 +42,10 @@ public class JobcategoryService {
     }
 
     @Transactional
-    public Jobcategory updateJobcategory(Long id, Jobcategory jobcategory) {
+    public Optional<Jobcategory> updateJobcategory(Long id, Jobcategory jobcategory) {
         if (jobcategoryRepository.existsById(id)) {
             jobcategory.setId(id);
-            return jobcategoryRepository.save(jobcategory);
+            return Optional.of(jobcategoryRepository.save(jobcategory));
         }
         else {
             return null;

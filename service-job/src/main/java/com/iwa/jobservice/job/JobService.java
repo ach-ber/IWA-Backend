@@ -45,12 +45,12 @@ public class JobService {
     }
 
     @Transactional
-    public Job updateJob(Long id, Job updatedJob) {
-        Job existingJob = jobRepository.findById(id).orElse(null);
+    public Optional<Job> updateJob(Long id, Job updatedJob) {
+        Optional<Job> existingJob = jobRepository.findById(id);
 
         if (existingJob != null) {
             updatedJob.setId(id);
-            return jobRepository.save(updatedJob);
+            return Optional.of(jobRepository.save(updatedJob));
         } else {
             return null;
         }

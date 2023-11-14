@@ -47,13 +47,9 @@ public class RecruitmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Recruitment> updateRecruitment(@PathVariable Long id, @RequestBody Recruitment updatedRecruitment) {
-        Recruitment result = service.update(id, updatedRecruitment);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.update(id, updatedRecruitment)
+            .map(recruitment -> ResponseEntity.status(HttpStatus.OK).body(recruitment))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

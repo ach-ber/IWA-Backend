@@ -48,13 +48,9 @@ public class JobController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable Long id, @RequestBody Job updatedJob) {
-        Job result = service.updateJob(id, updatedJob);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.updateJob(id, updatedJob)
+            .map(job -> ResponseEntity.status(HttpStatus.OK).body(job))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }
