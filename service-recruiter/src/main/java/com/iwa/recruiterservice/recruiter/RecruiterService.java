@@ -27,8 +27,8 @@ public class RecruiterService {
         return this.recruiterRepository.findAll();
     }
 
-    public Recruiter getRecruiterById(Long id){
-        return this.recruiterRepository.findById(id).orElse(null);
+    public Optional<Recruiter> getRecruiterById(Long id){
+        return this.recruiterRepository.findById(id);
     }
 
     @Transactional

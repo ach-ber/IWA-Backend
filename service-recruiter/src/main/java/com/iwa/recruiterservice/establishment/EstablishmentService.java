@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstablishmentService {
@@ -27,8 +28,8 @@ public class EstablishmentService {
         return this.establishmentRepository.findAll();
     }
 
-    public Establishment getEstablishmentById(Long id){
-        return this.establishmentRepository.findById(id).orElse(null);
+    public Optional<Establishment> getEstablishmentById(Long id){
+        return this.establishmentRepository.findById(id);
     }
 
     @Transactional

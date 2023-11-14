@@ -22,12 +22,9 @@ public class AddressController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
-        Address res = service.getAddressById(id);
-        if (res != null) {
-            return new ResponseEntity<>(res, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.getAddressById(id)
+            .map(address -> new ResponseEntity<>(address, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping

@@ -22,8 +22,10 @@ public class RecruiterController {
     }
 
     @GetMapping("/{id}")
-    public Recruiter getRecruiterById(@PathVariable Long id) {
-        return service.getRecruiterById(id);
+    public ResponseEntity<Recruiter> getRecruiterById(@PathVariable Long id) {
+        return service.getRecruiterById(id)
+            .map(recruiter -> new ResponseEntity<>(recruiter, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping

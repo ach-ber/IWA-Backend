@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -26,8 +27,8 @@ public class AddressService {
         return this.addressRepository.findAll();
     }
 
-    public Address getAddressById(Long id){
-        return this.addressRepository.findById(id).orElse(null);
+    public Optional<Address> getAddressById(Long id){
+        return this.addressRepository.findById(id);
     }
 
     @Transactional

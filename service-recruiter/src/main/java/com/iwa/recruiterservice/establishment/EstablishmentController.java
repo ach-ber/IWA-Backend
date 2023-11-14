@@ -22,8 +22,10 @@ public class EstablishmentController {
     }
 
     @GetMapping("/{id}")
-    public Establishment getEstablishmentById(@PathVariable Long id) {
-        return service.getEstablishmentById(id);
+    public ResponseEntity<Establishment> getEstablishmentById(@PathVariable Long id) {
+        return service.getEstablishmentById(id)
+            .map(establishment -> new ResponseEntity<>(establishment, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
