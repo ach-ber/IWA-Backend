@@ -114,6 +114,35 @@ services:
     # doesn’t need neither gateway
     # nor eureka because it’s considered as an external service
 
+  psql-db-reviewservice:
+    image: postgres
+    container_name: psql-db-reviewservice
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=review
+    ports:
+      - '5435:5432'
+    networks:
+      - gateway-network
+  service-review:
+    container_name: service-review
+    build:
+      context: ./service-review
+      dockerfile: Dockerfile
+    ports:
+      - '8304:8304'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-reviewservice:5432/review
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-reviewservice
+      - eureka
+
 networks:
   gateway-network:
     driver: bridge
