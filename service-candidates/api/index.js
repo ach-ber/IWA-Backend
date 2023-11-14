@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const PORT = 3000
+const PORT = 8303
 const HOST = "0.0.0.0"
 
 app.get("/candidates", (req, res) => {
