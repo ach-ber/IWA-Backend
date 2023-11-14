@@ -104,6 +104,15 @@ services:
     depends_on:
       - psql-db-recruiterservice
       - eureka
+  service-candidates:
+    container_name: service-candidates
+    build:
+      context: ./service-candidates/api
+      dockerfile: Dockerfile
+    ports:
+      - '8303:8303'
+    # doesn’t need neither gateway
+    # nor eureka because it’s considered as an external service
 
 networks:
   gateway-network:

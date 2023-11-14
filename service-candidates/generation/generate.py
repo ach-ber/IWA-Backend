@@ -102,7 +102,7 @@ def generate_candidates(number=1):
     return [fake_candidate() for _ in range(number)]
 
 
-data = {"candidats": generate_candidates(300)}
+data = {"candidates": generate_candidates(300)}
 
 output_path = "fake_candidates.json"
 
