@@ -36,8 +36,24 @@ public class RecruitmentService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public boolean deleteById(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Recruitment update(Long id, Recruitment updatedRecruitment) {
+        Recruitment existingRecruitment = repository.findById(id).orElse(null);
+
+        if (existingRecruitment != null) {
+            updatedRecruitment.setId(id);
+            return repository.save(updatedRecruitment);
+        } else {
+            return null;
+        }
     }
 
     public Optional<Recruitment> getById(Long id) {

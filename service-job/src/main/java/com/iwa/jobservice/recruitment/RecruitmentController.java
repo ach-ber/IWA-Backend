@@ -35,8 +35,25 @@ public class RecruitmentController {
     }
 
     @DeleteMapping(value = "{id}")
-    public void delete(@PathVariable Long id) {
-        service.deleteById(id);
+    public ResponseEntity<Recruitment> delete(@PathVariable Long id) {
+        boolean deleted = service.deleteById(id);
+
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Recruitment> updateRecruitment(@PathVariable Long id, @RequestBody Recruitment updatedRecruitment) {
+        Recruitment result = service.update(id, updatedRecruitment);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

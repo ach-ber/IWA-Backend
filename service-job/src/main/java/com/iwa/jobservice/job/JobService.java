@@ -36,8 +36,24 @@ public class JobService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        jobRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        if (jobRepository.existsById(id)) {
+            jobRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Job updateJob(Long id, Job updatedJob) {
+        Job existingJob = jobRepository.findById(id).orElse(null);
+
+        if (existingJob != null) {
+            updatedJob.setId(id);
+            return jobRepository.save(updatedJob);
+        } else {
+            return null;
+        }
     }
 
     public Optional<Job> getById(Long id) {
