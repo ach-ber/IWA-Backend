@@ -41,12 +41,12 @@ public class AddressService {
     }
 
     @Transactional
-    public Address updateAddress(Long id, Address updatedAddress) {
-        Address existingAddress = addressRepository.findById(id).orElse(null);
+    public Optional<Address> updateAddress(Long id, Address updatedAddress) {
+        Optional<Address> existingAddress = addressRepository.findById(id);
 
         if (existingAddress != null) {
             updatedAddress.setId(id);
-            return addressRepository.save(updatedAddress);
+            return Optional.of(addressRepository.save(updatedAddress));
         } else {
             return null;
         }

@@ -41,12 +41,12 @@ public class RecruiterService {
     }
 
     @Transactional
-    public Recruiter updateRecruiter(Long id, Recruiter updatedRecruiter) {
-        Recruiter existingRecruiter = recruiterRepository.findById(id).orElse(null);
+    public Optional<Recruiter> updateRecruiter(Long id, Recruiter updatedRecruiter) {
+        Optional<Recruiter> existingRecruiter = recruiterRepository.findById(id);
 
         if (existingRecruiter != null) {
             updatedRecruiter.setId(id);
-            return recruiterRepository.save(updatedRecruiter);
+            return Optional.of(recruiterRepository.save(updatedRecruiter));
         } else {
             return null;
         }

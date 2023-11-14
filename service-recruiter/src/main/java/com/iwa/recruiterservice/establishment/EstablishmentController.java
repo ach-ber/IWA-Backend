@@ -41,13 +41,9 @@ public class EstablishmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Establishment> updateEstablishment(@PathVariable Long id, @RequestBody Establishment updatedEstablishment) {
-        Establishment result = service.updateEstablishment(id, updatedEstablishment);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.updateEstablishment(id, updatedEstablishment)
+            .map(establishment -> new ResponseEntity<>(establishment, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")

@@ -41,12 +41,12 @@ public class CompanyService {
     }
 
     @Transactional
-    public Company updateCompany(Long id, Company updatedCompany) {
-        Company existingCompany = companyRepository.findById(id).orElse(null);
+    public Optional<Company> updateCompany(Long id, Company updatedCompany) {
+        Optional<Company> existingCompany = companyRepository.findById(id);
 
         if (existingCompany != null) {
             updatedCompany.setId(id);
-            return companyRepository.save(updatedCompany);
+            return Optional.of(companyRepository.save(updatedCompany));
         } else {
             return null;
         }

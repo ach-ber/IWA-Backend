@@ -42,12 +42,12 @@ public class EstablishmentService {
     }
 
     @Transactional
-    public Establishment updateEstablishment(Long id, Establishment updatedEstablishment) {
-        Establishment existingEstablishment = establishmentRepository.findById(id).orElse(null);
+    public Optional<Establishment> updateEstablishment(Long id, Establishment updatedEstablishment) {
+        Optional<Establishment> existingEstablishment = establishmentRepository.findById(id);
 
         if (existingEstablishment != null) {
             updatedEstablishment.setId(id);
-            return establishmentRepository.save(updatedEstablishment);
+            return Optional.of(establishmentRepository.save(updatedEstablishment));
         } else {
             return null;
         }

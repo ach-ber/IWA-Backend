@@ -41,13 +41,9 @@ public class RecruiterController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Recruiter> updateRecruiter(@PathVariable Long id, @RequestBody Recruiter updatedRecruiter) {
-        Recruiter result = service.updateRecruiter(id, updatedRecruiter);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return service.updateRecruiter(id, updatedRecruiter)
+            .map(recruiter -> new ResponseEntity<>(recruiter, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
