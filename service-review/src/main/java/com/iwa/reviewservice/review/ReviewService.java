@@ -54,4 +54,17 @@ public class ReviewService {
             return null;
         }
     }
+
+    public List<Review> getReviewsByCandidateId(Long candidateId) {
+        // get the reviews from the repository which have the candidateId passed as parameter
+        List<Review> reviews = this.reviewRepository.findAll();
+
+        List<Review> res = reviews.stream().map(review -> {
+            if (review.getCandidateId().equals(candidateId)) {
+                return review;
+            }
+            return null;
+        }).toList();
+        return res;
+    }
 }
