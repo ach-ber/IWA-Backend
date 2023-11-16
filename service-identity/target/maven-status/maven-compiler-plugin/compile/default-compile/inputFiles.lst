@@ -1,0 +1,10 @@
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\config\CustomUserDetails.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\entity\UserCredential.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\IdentityServiceApplication.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\config\AuthConfig.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\repository\UserCredentialRepository.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\service\AuthService.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\service\JwtService.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\dto\AuthRequest.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\controller\AuthController.java
+D:\Achille\5A\IWA-Backend\service-identity\src\main\java\com\javatechie\config\CustomUserDetailsService.java
