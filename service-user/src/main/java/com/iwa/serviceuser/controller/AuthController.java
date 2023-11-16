@@ -4,9 +4,12 @@ import com.iwa.serviceuser.dto.AuthRequest;
 import com.iwa.serviceuser.entity.UserCredential;
 import com.iwa.serviceuser.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,8 +22,13 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public String addNewUser(@RequestBody UserCredential user) throws Exception {
-        return service.saveUser(user);
+    public ResponseEntity<String> addNewUser(@RequestBody UserCredential user) throws AuthenticationException {
+        try {
+            String response = service.saveUser(user);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user already exist");
+        }
     }
 
     @PostMapping("/token")

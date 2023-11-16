@@ -112,33 +112,6 @@ services:
       - '8303:8303'
     # doesn’t need neither gateway
     # nor eureka because it’s considered as an external service
-  service-identity:
-    container_name: service-identity
-    build:
-      context: ./service-identity
-    ports:
-      - "9898:9898"
-    networks:
-      - gateway-network
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db-identityservice:3306/javatechie
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
-    depends_on:
-      - mysql-db-identityservice
-      - eureka
-  mysql-db-identityservice:
-    image: mysql
-    container_name: mysql-db-identityservice
-    environment:
-      - MYSQL_DATABASE=javatechie
-      - MYSQL_ROOT_PASSWORD=password
-    ports:
-      - '3306:3306'
-    networks:
-      - gateway-network
-
   service-user:
     container_name: service-user
     build:
@@ -157,6 +130,8 @@ services:
       - eureka
   psql-db-serviceuser:
     image: postgres
+    volumes:
+      - data-psql-db-serviceuser:/var/lib/postgresql/data
     container_name: psql-db-serviceuser
     environment:
       - POSTGRES_USER=admin
@@ -169,3 +144,6 @@ services:
 networks:
   gateway-network:
     driver: bridge
+
+volumes:
+  data-psql-db-serviceuser:
