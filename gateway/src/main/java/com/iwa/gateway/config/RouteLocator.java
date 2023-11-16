@@ -18,6 +18,7 @@ public class RouteLocator {
                 .route("service-test", r->r.path("/test/**").filters(f -> f.stripPrefix(1).filter(filter)).uri("lb://SERVICE-TEST"))
                 .route("service-job", r->r.path("/job/**").filters(f -> f.stripPrefix(1).filter(filter)).uri("lb://SERVICE-JOB"))
                 .route("service-recruiter", r->r.path("/recruiter/**").filters(f -> f.stripPrefix(1).filter(filter)).uri("lb://SERVICE-RECRUITER"))
+                .route("service-user", r->r.path("/user/**").filters(f -> f.stripPrefix(1).filter(filter)).uri("lb://SERVICE-USER"))
                 .build();
     }
 }

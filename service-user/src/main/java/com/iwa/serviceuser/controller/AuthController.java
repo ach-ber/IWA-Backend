@@ -19,7 +19,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public String addNewUser(@RequestBody UserCredential user) {
+    public String addNewUser(@RequestBody UserCredential user) throws Exception {
         return service.saveUser(user);
     }
 
