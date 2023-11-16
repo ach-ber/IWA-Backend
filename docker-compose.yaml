@@ -75,7 +75,6 @@ services:
     depends_on:
       - psql-db-jobservice
       - eureka
-
   psql-db-recruiterservice:
     image: postgres
     container_name: psql-db-recruiterservice
@@ -113,7 +112,60 @@ services:
       - '8303:8303'
     # doesn’t need neither gateway
     # nor eureka because it’s considered as an external service
+  service-identity:
+    container_name: service-identity
+    build:
+      context: ./service-identity
+    ports:
+      - "9898:9898"
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db-identityservice:3306/javatechie
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+    depends_on:
+      - mysql-db-identityservice
+      - eureka
+  mysql-db-identityservice:
+    image: mysql
+    container_name: mysql-db-identityservice
+    environment:
+      - MYSQL_DATABASE=javatechie
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - '3306:3306'
+    networks:
+      - gateway-network
 
+  service-user:
+    container_name: service-user
+    build:
+      context: ./service-user
+    ports:
+      - "7000:7000"
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-serviceuser:5432/users
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-serviceuser
+      - eureka
+  psql-db-serviceuser:
+    image: postgres
+    container_name: psql-db-serviceuser
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=users
+    ports:
+      - '5435:5432'
+    networks:
+      - gateway-network
 networks:
   gateway-network:
     driver: bridge

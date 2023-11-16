@@ -1,4 +1,4 @@
-package com.iwa.gateway.filter;
+package com.iwa.gateway.config;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,8 @@ public class RouteValidator {
     public static final List<String> openApiEndpoints = List.of(
             "/auth/register",
             "/auth/token",
-            "/eureka"
+            "/eureka",
+            "/api/recruiters"
     );
 
     public Predicate<ServerHttpRequest> isSecured =
