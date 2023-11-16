@@ -19,6 +19,7 @@ def fake_address():
 
 def fake_reference():
     return {
+        "id": uuid7str(),
         "refName": fake.name(),
         "refEstablishment": fake.company(),
         "refAddress": fake_address(),
@@ -37,6 +38,7 @@ def fake_period_past():
 def fake_experience():
     startedAt, endedAt = fake_period_past()
     return {
+        "id": uuid7str(),
         "job": fake.job(),
         "jobCategory": fake.random_int(min=1, max=20),  # TODO: use real categories?
         "startedAt": startedAt.isoformat(),
@@ -50,6 +52,7 @@ def fake_experience():
 
 def fake_availability():
     return {
+        "id": uuid7str(),
         "job": fake.job(),
         "jobCategory": fake.random_int(min=1, max=20),
         "startsAt": fake.date_time_this_year(
@@ -64,6 +67,7 @@ def fake_availability():
 
 def fake_opinion():
     return {
+        "id": uuid7str(),
         "score": fake.random_int(min=0, max=5),
         "message": fake.text(),
         "employerId": uuid7str(),
