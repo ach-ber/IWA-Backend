@@ -16,6 +16,9 @@ public class ReviewService {
 
     @Transactional
     public Review createReview(Review review){
+        if (review.getRating() > 5 || review.getRating() < 0) {
+            return null;
+        }
         return this.reviewRepository.save(review);
     }
 

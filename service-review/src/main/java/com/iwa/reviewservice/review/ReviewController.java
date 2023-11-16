@@ -30,6 +30,10 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Review> createReview(@RequestBody Review newReview) {
+        if (newReview.getRating() > 5 || newReview.getRating() < 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         Review result = service.createReview(newReview);
 
         if (result != null) {
