@@ -52,8 +52,8 @@ public class MatchingService {
     }
 
     private boolean isPeriodIncluded(Long availabilityStartDate, Long availabilityEndDate, Long jobStartDate, Long jobEndDate) {
-        return availabilityStartDate.compareTo(jobStartDate) >= 0 &&
-                availabilityEndDate.compareTo(jobEndDate) <= 0;
+        return availabilityStartDate.compareTo(jobStartDate) <= 0 &&
+                availabilityEndDate.compareTo(jobEndDate) >= 0;
     }
 
     private boolean isCityIncluded(List<String> places, String establishmentCity) {
