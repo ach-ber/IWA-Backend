@@ -2,7 +2,7 @@ package com.iwa.jobservice.matching;
 
 import java.util.List;
 
-public class Candidate {
+public class Candidate implements Comparable {
     private Long id;
 
     private String name;
@@ -12,6 +12,8 @@ public class Candidate {
     private List<Availability> availabilities;
 
     private List<Opinion> opinions;
+
+    private double score = 0;
 
     public Candidate() {
     }
@@ -69,5 +71,19 @@ public class Candidate {
 
     public void setOpinions(List<Opinion> opinions) {
         this.opinions = opinions;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Candidate candidate = (Candidate) o;
+        return this.getScore() > candidate.getScore() ? 1 : -1;
     }
 }

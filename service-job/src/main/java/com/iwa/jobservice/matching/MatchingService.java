@@ -5,6 +5,28 @@ import java.util.List;
 
 public class MatchingService {
 
+    public List<Candidate> getMatchingCandidatesOrdered(JobMatch jobMatch, List<Candidate> candidates) {
+        List<Candidate> matchingCandidates = getMatchingCandidates(candidates, jobMatch);
+        List<Candidate> orderedCandidates = new ArrayList<>();
+
+        for (Candidate candidate : matchingCandidates) {
+
+            // TODO : get candidate reviews from database
+            List<Review> candidateReviews = new ArrayList<>();
+            candidate = setCandidateScore(candidate, jobMatch.getJobcategory().getName(), candidateReviews);
+            orderedCandidates.add(candidate);
+        }
+        orderedCandidates.sort((c1, c2) -> Double.compare(c2.getScore(), c1.getScore()));
+        return orderedCandidates;
+    }
+
+    public Candidate setCandidateScore(Candidate candidate, String jobCategory, List<Review> reviews) {
+        List<Evaluation> evaluations = getCandidateEvaluationsByJobCategory(candidate, jobCategory, reviews);
+        double score = getEvaluationValue(evaluations);
+        candidate.setScore(score);
+        return candidate;
+    }
+
     public double getEvaluationValue(List<Evaluation> evaluations) {
         double score = 0;
         if (evaluations == null || evaluations.isEmpty()) {
