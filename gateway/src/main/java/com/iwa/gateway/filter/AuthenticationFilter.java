@@ -36,7 +36,14 @@ public class AuthenticationFilter implements GatewayFilter {
             try {
 //                    //REST call to AUTH service
                 // template.getForObject("http://IDENTITY-SERVICE//validate?token" + authHeader, String.class);
+                System.out.println("validate:" + authHeader);
                 jwtUtil.validateToken(authHeader);
+                System.out.println("valid access...!");
+                String role = jwtUtil.getRole(authHeader);
+
+                System.out.println("header:" + exchange.getRequest().getHeaders());
+                exchange.getRequest().mutate().header("X-User-Roles", role);
+                System.out.println("X-User-Roles: " + role);
 
             } catch (Exception e) {
                 System.out.println("invalid access...!");

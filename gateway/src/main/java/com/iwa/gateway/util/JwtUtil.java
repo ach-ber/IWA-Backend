@@ -22,6 +22,13 @@ public class JwtUtil {
         Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
     }
 
+    public String getRole(final String token) {
+        System.out.println("claims: " + Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody());
+        System.out.println("claims header: " + Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getHeader());
+        String role = (String) Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().get("role");
+        System.out.println("role: " + role);
+        return role;
+    }
 
 
     private Key getSignKey() {

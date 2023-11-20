@@ -19,12 +19,15 @@ public class JwtService {
 
 
     public void validateToken(final String token) {
+        // sout le role
+        System.out.println("role: " + Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().get("role"));
         Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
     }
 
 
     public String generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "ROLE_USER");
         return createToken(claims, userName);
     }
 
