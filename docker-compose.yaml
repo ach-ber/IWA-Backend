@@ -113,6 +113,17 @@ services:
       - '8303:8303'
     # doesn’t need neither gateway
     # nor eureka because it’s considered as an external service
+  service-ktlanding:
+    container_name: service-ktlanding
+    build:
+      context: ./service-ktlanding
+      dockerfile: Dockerfile
+    ports:
+      - '8305:8305'
+    networks:
+      - gateway-network
+    depends_on:
+      - eureka
 
 networks:
   gateway-network:
