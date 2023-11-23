@@ -18,6 +18,7 @@ public class GatewayApplication {
 				.route("service-job", r->r.path("/job/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-JOB"))
 				.route("service-recruiter", r->r.path("/recruiter/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-RECRUITER"))
 				.route("service-review", r->r.path("/review/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-REVIEW"))
+				.route("service-ktlanding", r->r.path("/landing/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-KTLANDING"))
 				.build();
 	}
 	public static void main(String[] args) {
