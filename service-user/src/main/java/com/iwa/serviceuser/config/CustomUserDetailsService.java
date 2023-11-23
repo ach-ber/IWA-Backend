@@ -21,4 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<UserCredential> credential = repository.findByEmail(email);
         return credential.map(CustomUserDetails::new).orElseThrow(() -> new UsernameNotFoundException("user not found with name :" + email));
     }
+
 }

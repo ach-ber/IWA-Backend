@@ -28,17 +28,14 @@ public class RecruiterController {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<Recruiter> createRecruiter(@RequestBody Recruiter newRecruiter) {
-        Recruiter result = service.createRecruiter(newRecruiter);
-
-        if (result != null) {
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/test")
+    public String test(){
+        return service.test();
     }
-
+    @PostMapping
+    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterUserRequest newRecruiter) {
+        return service.createRecruiter(newRecruiter);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Recruiter> updateRecruiter(@PathVariable Long id, @RequestBody Recruiter updatedRecruiter) {
         return service.updateRecruiter(id, updatedRecruiter)

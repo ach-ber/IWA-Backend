@@ -12,11 +12,7 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-
-
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
-
-
     public boolean validateToken(final String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
@@ -33,13 +29,10 @@ public class JwtUtil {
     }
 
     public String getRole(final String token) {
-        System.out.println("claims: " + Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody());
-        System.out.println("claims header: " + Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getHeader());
         String role = (String) Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().get("role");
         System.out.println("role: " + role);
         return role;
     }
-
 
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);

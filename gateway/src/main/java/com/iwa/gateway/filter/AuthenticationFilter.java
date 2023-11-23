@@ -18,67 +18,55 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AuthenticationFilter implements GatewayFilter {
 
-    public AuthenticationFilter() {
-        revokedTokenCache = CacheBuilder.newBuilder()
-                .expireAfterWrite(24, TimeUnit.HOURS) // Exemple d'expiration après 24 heures
-                .build();
-    }
     private final Cache<String, Boolean> revokedTokenCache;
 
     @Autowired
     private RouteValidator validator;
 
-    //    @Autowired
-//    private RestTemplate template;
     @Autowired
     private JwtUtil jwtUtil;
+
+    public AuthenticationFilter() {
+        revokedTokenCache = CacheBuilder.newBuilder()
+                .expireAfterWrite(24, TimeUnit.HOURS)
+                .build();
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         if (validator.isSecured.test(exchange.getRequest())) {
-            //header contains token or not
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Missing authorization header");
             }
 
-            String authHeader;
-            try {
-                authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    authHeader = authHeader.substring(7);
-
-                    try {
-//                    //REST call to AUTH service
-                        // template.getForObject("http://IDENTITY-SERVICE//validate?token" + authHeader, String.class);
-                        System.out.println("validate:" + authHeader);
-                        if (!jwtUtil.validateToken(authHeader)) {
-                            return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
-                        }
-                        if (isTokenRevoked(authHeader)) {
-                            return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "token revoked");
-                        }
-                        System.out.println("Token not revoked...!");
-                        System.out.println("revoqueTokenCache: " + revokedTokenCache.asMap());
-                        if (requestRequiresLogout(exchange.getRequest())) {
-                            System.out.println("logout...!");
-                            revokeToken(authHeader);
-                        }
-                        System.out.println("valid access...!");
-                        String role = jwtUtil.getRole(authHeader);
-                        System.out.println("header:" + exchange.getRequest().getHeaders());
-                        exchange.getRequest().mutate().header("X-User-Roles", role);
-                        System.out.println("X-User-Roles: " + role);
-
-                    } catch (Exception e) {
-                        return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
-                    }
-                } else {
-                    return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid authorization header");
-                }
-            } catch (Exception e) {
+            String authHeader = extractAuthorizationHeader(exchange.getRequest());
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid authorization header");
             }
+
+            authHeader = authHeader.substring(7);
+
+            try {
+                if (!jwtUtil.validateToken(authHeader)) {
+                    return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
+                }
+
+                if (isTokenRevoked(authHeader)) {
+                    return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Token revoked");
+                }
+
+                if (requestRequiresLogout(exchange.getRequest())) {
+                    revokeToken(authHeader);
+                }
+
+                String role = jwtUtil.getRole(authHeader);
+                exchange.getRequest().mutate().header("X-User-Roles", role);
+
+            } catch (Exception e) {
+                return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
+            }
         }
+
         return chain.filter(exchange);
     }
 
@@ -89,19 +77,19 @@ public class AuthenticationFilter implements GatewayFilter {
                 .bufferFactory().wrap(message.getBytes())));
     }
 
+    private String extractAuthorizationHeader(ServerHttpRequest request) {
+        return request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    }
+
     private boolean requestRequiresLogout(ServerHttpRequest request) {
-        // Vérifiez si la requête nécessite une déconnexion (logout) selon votre logique
-        // Par exemple, selon le chemin de la requête
         return request.getURI().getPath().contains("logout");
     }
 
     private void revokeToken(String authToken) {
-        // Révoquer le token en l'ajoutant à la liste noire
         revokedTokenCache.put(authToken, true);
     }
 
     public boolean isTokenRevoked(String token) {
         return revokedTokenCache.getIfPresent(token) != null;
     }
-
 }

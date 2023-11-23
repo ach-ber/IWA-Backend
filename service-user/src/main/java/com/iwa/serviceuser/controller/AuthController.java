@@ -30,6 +30,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> addNewUser(@RequestBody SignupRequest signupRequest) throws AuthenticationException {
+        System.out.println("signupRequest: " + signupRequest);
         try {
             String response = service.saveUser(signupRequest);
             return ResponseEntity.ok(response);
@@ -56,7 +57,6 @@ public class AuthController {
         } else {
             throw new RuntimeException("invalid access");
         }
-
          */
     }
 

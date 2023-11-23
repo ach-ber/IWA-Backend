@@ -1,6 +1,6 @@
 package com.iwa.serviceuser.entity;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,8 @@ public class UserCredential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+
+    @Email
     private String email;
     private String password;
     private String role;
