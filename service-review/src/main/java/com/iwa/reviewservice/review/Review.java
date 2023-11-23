@@ -14,14 +14,14 @@ public class Review {
     private int rating;
     private String comment;
     private Long recruiterId;
-    private Long candidateId;
+    private String candidateId;
     private Long jobId;
     private Long createdAt;
 
     public Review() {
     }
 
-    public Review(String title, int rating, String comment, Long recruiterId, Long candidateId, Long jobId, Long createdAt) {
+    public Review(String title, int rating, String comment, Long recruiterId, String candidateId, Long jobId, Long createdAt) {
         this.title = title;
         this.rating = rating;
         this.comment = comment;
@@ -71,11 +71,11 @@ public class Review {
         this.recruiterId = recruiterId;
     }
 
-    public Long getCandidateId() {
+    public String getCandidateId() {
         return candidateId;
     }
 
-    public void setCandidateId(Long candidateId) {
+    public void setCandidateId(String candidateId) {
         this.candidateId = candidateId;
     }
 

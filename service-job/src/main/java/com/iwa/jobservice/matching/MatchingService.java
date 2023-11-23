@@ -59,9 +59,9 @@ public class MatchingService {
     private boolean hasMatchingAvailability(Candidate candidate, JobDTO job) {
         for (AvailabilityDTO availability : candidate.getAvailabilities()) {
             if (
-                    availability.getJobCategory() == job.getJob().getCategory_key()
-                    // && isPeriodIncluded(availability.getStartsAt(), availability.getEndsAt(), job.getStartDate(), job.getEndDate())
-                    // && isCityIncluded(availability.getPlaces(), job.getCity())
+                    availability.getJobCategory() == job.getJob().getCategory_key() &&
+                    isPeriodIncluded(availability.getStartsAt(), availability.getEndsAt(), job.getStartDate(), job.getEndDate()) &&
+                    isCityIncluded(availability.getPlaces(), job.getCity())
             ) {
                 return true;
             }

@@ -3,8 +3,11 @@ package com.iwa.reviewservice.review;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -56,16 +59,23 @@ public class ReviewService {
     }
 
     public List<Review> getCandidateReviews(String candidateId) {
-        // get the reviews from the repository which have the candidateId passed as parameter
-        List<Review> reviews = this.reviewRepository.findAll();
-        Long candidateIdLong = Long.parseLong(candidateId);
+        try {
 
-        List<Review> res = reviews.stream().map(review -> {
-            if (review.getCandidateId().equals(candidateIdLong)) {
-                return review;
+            // get the reviews from the repository which have the candidateId passed as parameter
+            List<Review> reviews = this.reviewRepository.findAll();
+            if (reviews == null || reviews.isEmpty()) {
+                return Collections.emptyList();
             }
-            return null;
-        }).toList();
-        return res;
+
+            List<Review> res = reviews.stream()
+                    .filter(review -> review.getCandidateId().equals(candidateId))
+                    .collect(Collectors.toList());
+
+            return res;
+        } catch (IllegalArgumentException e) {
+            // Handle the case where the candidateId is not a valid UUID
+            // For example, log an error or return an empty list
+            return Collections.emptyList();
+        }
     }
 }

@@ -8,7 +8,7 @@ public class ReviewDTO implements Evaluation, Serializable {
     private int rating;
     private String comment;
     private Long recruiterId;
-    private Long candidateId;
+    private String candidateId;
     private Long jobId;
     private Long createdAt;
     private Long jobcategory;
@@ -16,7 +16,7 @@ public class ReviewDTO implements Evaluation, Serializable {
     public ReviewDTO() {
     }
 
-    public ReviewDTO(String title, int rating, String comment, Long recruiterId, Long candidateId, Long jobId, Long createdAt, Long jobcategory) {
+    public ReviewDTO(String title, int rating, String comment, Long recruiterId, String candidateId, Long jobId, Long createdAt, Long jobcategory) {
         this.title = title;
         this.rating = rating;
         this.comment = comment;
@@ -79,11 +79,11 @@ public class ReviewDTO implements Evaluation, Serializable {
         this.recruiterId = recruiterId;
     }
 
-    public Long getCandidateId() {
+    public String getCandidateId() {
         return candidateId;
     }
 
-    public void setCandidateId(Long candidateId) {
+    public void setCandidateId(String candidateId) {
         this.candidateId = candidateId;
     }
 

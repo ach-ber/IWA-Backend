@@ -16,8 +16,5 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (reviewService.getNumberOfReviews() == 0) {
-            reviewService.createReview(new Review("Review 1", 10, "Perfect!", 1L, 1L, 1L, 3456767L));
-        }
     }
 }
