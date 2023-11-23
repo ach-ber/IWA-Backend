@@ -60,4 +60,9 @@ public class ReviewController {
             return new ResponseEntity<>("Review not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/candidate/{candidateId}")
+    public List<Review> getCandidateReviews(@PathVariable String candidateId) {
+        return service.getCandidateReviews(candidateId);
+    }
 }

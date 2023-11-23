@@ -22,7 +22,7 @@ public class JobcategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Jobcategory> getJobcategoryById(Long id) {
+    public ResponseEntity<Jobcategory> getJobcategoryById(@PathVariable Long id) {
         return service.getJobcategoryById(id)
             .map(jobcategory -> new ResponseEntity<>(jobcategory, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

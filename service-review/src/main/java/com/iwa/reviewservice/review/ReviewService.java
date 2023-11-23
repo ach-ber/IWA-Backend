@@ -55,12 +55,13 @@ public class ReviewService {
         }
     }
 
-    public List<Review> getReviewsByCandidateId(Long candidateId) {
+    public List<Review> getCandidateReviews(String candidateId) {
         // get the reviews from the repository which have the candidateId passed as parameter
         List<Review> reviews = this.reviewRepository.findAll();
+        Long candidateIdLong = Long.parseLong(candidateId);
 
         List<Review> res = reviews.stream().map(review -> {
-            if (review.getCandidateId().equals(candidateId)) {
+            if (review.getCandidateId().equals(candidateIdLong)) {
                 return review;
             }
             return null;

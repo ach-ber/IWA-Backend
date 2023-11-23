@@ -29,6 +29,16 @@ public class Address {
         this.country = country;
     }
 
+    public Address(Long id, String streetNum, String street, String complement, String city, String zipCode, String country) {
+        this.id = id;
+        this.streetNum = streetNum;
+        this.street = street;
+        this.complement = complement;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+    }
+
     public Long getId() {
         return id;
     }
