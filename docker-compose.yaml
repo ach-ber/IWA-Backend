@@ -141,6 +141,18 @@ services:
       - '5435:5432'
     networks:
       - gateway-network
+  service-ktlanding:
+    container_name: service-ktlanding
+    build:
+      context: ./service-ktlanding
+      dockerfile: Dockerfile
+    ports:
+      - '8305:8305'
+    networks:
+      - gateway-network
+    depends_on:
+      - eureka
+
 networks:
   gateway-network:
     driver: bridge
