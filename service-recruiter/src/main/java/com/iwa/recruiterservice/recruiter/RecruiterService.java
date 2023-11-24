@@ -16,7 +16,7 @@ public class RecruiterService {
     @Value("${service.user.url}")
     private String userServiceUrl;
 
-    private RecruiterRepository recruiterRepository;
+    private final RecruiterRepository recruiterRepository;
 
     @Autowired
     private RestTemplate restTemplate;

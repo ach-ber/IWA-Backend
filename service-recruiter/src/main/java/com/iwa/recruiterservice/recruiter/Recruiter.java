@@ -31,16 +31,12 @@ public class Recruiter {
     @Size(max = 15)
     private String phone;
 
-    @Email
     private String email;
 
-    @NotBlank
     private LocalDate createdAt;
 
-    @NotBlank
     private String subscription;
 
-    @NotBlank
     private LocalDate subscription_startDate;
 
     private LocalDate subscription_endDate;

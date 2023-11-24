@@ -103,6 +103,7 @@ services:
     depends_on:
       - psql-db-recruiterservice
       - eureka
+      - service-user
   service-candidates:
     container_name: service-candidates
     build:

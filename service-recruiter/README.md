@@ -36,3 +36,10 @@ Routes protégées accessible par les rôles :
 Routes protégées accessible par les rôles :
   - 'ADMIN'
 @PreAuthorize("hasRole('ADMIN')")
+```
+
+### Initialisation
+
+2 utilisateurs sont créés au démarrage de l'application :
+  - ADMIN / email : admin@gmail.com  / password : admin
+  - USER / email : JohnDoe@gmail.com / password : password
