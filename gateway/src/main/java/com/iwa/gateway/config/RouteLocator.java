@@ -8,14 +8,6 @@ import com.iwa.gateway.filter.AuthenticationFilter;
 
 @Configuration
 public class RouteLocator {
-
-    /*
-
-    @Autowired
-    AuthenticationFilter filter;
-
-     */
-
     @Bean
     public AuthenticationFilter authenticationFilter() {
         return new AuthenticationFilter();

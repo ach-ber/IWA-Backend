@@ -1,6 +1,6 @@
 package com.iwa.serviceuser.config;
 
-import com.iwa.serviceuser.entity.UserCredential;
+import com.iwa.serviceuser.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,9 +13,9 @@ public class CustomUserDetails implements UserDetails {
 
     private String role;
 
-    public CustomUserDetails(UserCredential userCredential) {
-        this.email = userCredential.getEmail();
-        this.password = userCredential.getPassword();
+    public CustomUserDetails(User user) {
+        this.email = user.getEmail();
+        this.password = user.getPassword();
     }
 
     @Override

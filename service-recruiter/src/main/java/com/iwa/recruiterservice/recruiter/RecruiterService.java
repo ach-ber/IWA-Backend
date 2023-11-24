@@ -45,7 +45,7 @@ public class RecruiterService {
                 requestBody.put("password", user.getPassword());
                 HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
                 System.out.println("request:" + request);
-                restTemplate.postForObject(userServiceUrl + "/auth/register", request, String.class);
+                restTemplate.postForObject(userServiceUrl + "/api/public/register", request, String.class);
             } catch (Exception e) {
                 recruiterRepository.deleteById(recruiter.getId());
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating user");

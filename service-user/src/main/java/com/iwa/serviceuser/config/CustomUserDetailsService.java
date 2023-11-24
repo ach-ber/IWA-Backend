@@ -1,7 +1,7 @@
 package com.iwa.serviceuser.config;
 
-import com.iwa.serviceuser.entity.UserCredential;
-import com.iwa.serviceuser.repository.UserCredentialRepository;
+import com.iwa.serviceuser.entity.User;
+import com.iwa.serviceuser.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserCredentialRepository repository;
+    private UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserCredential> credential = repository.findByEmail(email);
+        Optional<User> credential = repository.findByEmail(email);
         return credential.map(CustomUserDetails::new).orElseThrow(() -> new UsernameNotFoundException("user not found with name :" + email));
     }
 
