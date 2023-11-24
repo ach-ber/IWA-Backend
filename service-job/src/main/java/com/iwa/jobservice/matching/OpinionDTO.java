@@ -51,6 +51,19 @@ public class OpinionDTO implements Evaluation, Serializable {
         this.providedAt = providedAt;
     }
 
+    // points calculés en fonction de la note donnée par l'employeur
+    // x représente une review avec une note à 5 étoiles
+    // y représente une review avec une note à 4 étoiles
+    // z représente une review avec une note à 3 étoiles
+    // -z représente une review avec une note à 2 étoiles
+    // -y représente une review avec une note à 1 étoile
+    // -x représente une review avec une note à 0 étoile
+    // on suppose que
+    // 1 review à 5 étoiles = 2 reviews à 4 étoiles = 6 reviews à 3 étoiles
+    // ainsi, on a
+    // 5x - 8y = 0
+    // 4y - 6z = 0
+    // x = 32/5, y = 4, z = 8/3
     @Override
     public double getValue() {
         switch (score) {
