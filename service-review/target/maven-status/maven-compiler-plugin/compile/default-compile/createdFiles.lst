@@ -1,0 +1,6 @@
+com\iwa\reviewservice\review\Review.class
+com\iwa\reviewservice\init\DataInitializer.class
+com\iwa\reviewservice\Application.class
+com\iwa\reviewservice\review\ReviewService.class
+com\iwa\reviewservice\review\ReviewRepository.class
+com\iwa\reviewservice\review\ReviewController.class
