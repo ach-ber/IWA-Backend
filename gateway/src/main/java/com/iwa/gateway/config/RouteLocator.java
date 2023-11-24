@@ -20,6 +20,7 @@ public class RouteLocator {
                 .route("service-job", r->r.path("/job/**").filters(f -> f.stripPrefix(1).filter(authenticationFilter())).uri("lb://SERVICE-JOB"))
                 .route("service-recruiter", r->r.path("/recruiter/**").filters(f -> f.stripPrefix(1).filter(authenticationFilter())).uri("lb://SERVICE-RECRUITER"))
                 .route("service-user", r->r.path("/user/**").filters(f -> f.stripPrefix(1).filter(authenticationFilter())).uri("lb://SERVICE-USER"))
+                .route("service-ktlanding", r->r.path("/landing/**").filters(f -> f.stripPrefix(1).filter(authenticationFilter())).uri("lb://SERVICE-KTLANDING"))
                 .build();
     }
 }
