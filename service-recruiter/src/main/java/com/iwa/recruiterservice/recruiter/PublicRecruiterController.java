@@ -30,6 +30,6 @@ public class PublicRecruiterController {
     public String test(){return "test public";}
     @PostMapping
     public ResponseEntity<?> createRecruiter(@RequestBody RecruiterUserRequest newRecruiter) {
-        return service.createRecruiter(newRecruiter);
+        return service.addRecruiterUser(newRecruiter);
     }
 }

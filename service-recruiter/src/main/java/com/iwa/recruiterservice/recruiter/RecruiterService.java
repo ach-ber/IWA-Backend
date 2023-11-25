@@ -26,7 +26,7 @@ public class RecruiterService {
     }
 
 
-    public ResponseEntity<?> createRecruiter(RecruiterUserRequest recruiterUserRequest){
+    public ResponseEntity<?> addRecruiterUser(RecruiterUserRequest recruiterUserRequest){
         ResponseEntity<Recruiter> response;
         Recruiter recruiter = new Recruiter(recruiterUserRequest);
         User user = new User(recruiterUserRequest);

@@ -3,6 +3,7 @@ package com.iwa.serviceuser.service;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -12,8 +13,12 @@ import java.util.Map;
 
 @Component
 public class JwtService {
-    public static final long TOKEN_EXPIRATION_TIME = 1000 * 60 * 30; // 30 minutes
-    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
+
+    @Value("${service.user.SECRET}")
+    private String SECRET;
+
+    @Value("${service.user.TOKEN_EXPIRATION_TIME}")
+    public long TOKEN_EXPIRATION_TIME;
     public boolean validateToken(final String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);

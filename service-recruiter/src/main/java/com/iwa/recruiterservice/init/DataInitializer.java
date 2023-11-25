@@ -17,7 +17,7 @@ public class DataInitializer implements CommandLineRunner {
         if (recruiterService.getNumberOfRecruiters() < 1) {
             List<RecruiterUserRequest> listRecruiter = getRecruiterUserList();
             for (RecruiterUserRequest recruiter : listRecruiter) {
-                recruiterService.createRecruiter(recruiter);
+                recruiterService.addRecruiterUser(recruiter);
             }
         } else {
             System.out.println("Recruiters already initialized");

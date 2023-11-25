@@ -10,6 +10,15 @@ permet les CRUD :
 
 ## Sécurité
 
+### Roles
+
+Les rôles existants sont :
+  - ADMIN
+  - FREE
+  - SILVER
+  - GOLD
+  - PLATINUM
+
 ### Configuration
 
 La configuration de la sécurité se fait dans le package security:
@@ -43,3 +52,4 @@ Routes protégées accessible par les rôles :
 2 utilisateurs sont créés au démarrage de l'application :
   - ADMIN / email : admin@gmail.com  / password : admin
   - USER / email : JohnDoe@gmail.com / password : password
+
