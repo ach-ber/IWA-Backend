@@ -27,16 +27,12 @@ public class RecruiterService {
 
 
     public ResponseEntity<?> createRecruiter(RecruiterUserRequest recruiterUserRequest){
-        System.out.println("createRecruiter");
         ResponseEntity<Recruiter> response;
         Recruiter recruiter = new Recruiter(recruiterUserRequest);
         User user = new User(recruiterUserRequest);
-        System.out.println("recruiter and user created");
         try {
-            System.out.println("trying to add recruiter");
             response = new ResponseEntity<>(addRecruiter(recruiter), HttpStatus.CREATED);
             try {
-                System.out.println("trying to add user");
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 Map<String, String> requestBody = new HashMap<>();
@@ -44,7 +40,6 @@ public class RecruiterService {
                 requestBody.put("role", user.getRole());
                 requestBody.put("password", user.getPassword());
                 HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
-                System.out.println("request:" + request);
                 restTemplate.postForObject(userServiceUrl + "/api/public/register", request, String.class);
             } catch (Exception e) {
                 recruiterRepository.deleteById(recruiter.getId());
@@ -85,7 +80,6 @@ public class RecruiterService {
     @Transactional
     public Optional<Recruiter> updateRecruiter(Long id, Recruiter updatedRecruiter) {
         Optional<Recruiter> existingRecruiter = recruiterRepository.findById(id);
-
         if (existingRecruiter.isPresent()) {
             updatedRecruiter.setId(id);
             return Optional.of(recruiterRepository.save(updatedRecruiter));
