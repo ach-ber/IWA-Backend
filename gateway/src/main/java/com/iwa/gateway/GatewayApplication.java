@@ -10,15 +10,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class GatewayApplication {
-
-	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		return builder.routes()
-				.route("service-test", r->r.path("/test/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-TEST"))
-				.route("service-job", r->r.path("/job/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-JOB"))
-				.route("service-recruiter", r->r.path("/recruiter/**").filters(f -> f.stripPrefix(1)).uri("lb://SERVICE-RECRUITER"))
-				.build();
-	}
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
 	}

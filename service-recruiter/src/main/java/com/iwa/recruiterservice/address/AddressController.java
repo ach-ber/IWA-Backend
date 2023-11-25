@@ -27,6 +27,13 @@ public class AddressController {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/city/{id}")
+    public ResponseEntity<String> getAddressCityById(@PathVariable Long id) {
+        return service.getAddressById(id)
+                .map(address -> new ResponseEntity<>(address.getCity(), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping
     public ResponseEntity<Address> createAddress(@RequestBody Address newAddress) {
         Address result = service.createAddress(newAddress);

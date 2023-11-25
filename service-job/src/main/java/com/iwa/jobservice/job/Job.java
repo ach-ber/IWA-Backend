@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class Job {
 
@@ -112,5 +114,19 @@ public class Job {
 
     public void setEstablishment_key(Long establishment_key) {
         this.establishment_key = establishment_key;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", perks='" + perks + '\'' +
+                ", salary=" + salary +
+                ", category_key=" + category_key +
+                ", establishment_key=" + establishment_key +
+                '}';
     }
 }
