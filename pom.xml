@@ -20,6 +20,7 @@
 		<module>service-test</module>
 		<module>service-job</module>
 		<module>service-recruiter</module>
+		<module>service-review</module>
 		<module>service-ktlanding</module>
 	</modules>
 	<properties>
