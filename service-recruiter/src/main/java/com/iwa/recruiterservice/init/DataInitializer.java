@@ -1,4 +1,8 @@
 package com.iwa.recruiterservice.init;
+import com.iwa.recruiterservice.address.Address;
+import com.iwa.recruiterservice.address.AddressService;
+import com.iwa.recruiterservice.establishment.Establishment;
+import com.iwa.recruiterservice.establishment.EstablishmentService;
 import com.iwa.recruiterservice.recruiter.RecruiterService;
 import com.iwa.recruiterservice.recruiter.RecruiterUserRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -9,8 +13,14 @@ import java.util.List;
 @Component
 public class DataInitializer implements CommandLineRunner {
     private final RecruiterService recruiterService;
-    public DataInitializer(RecruiterService recruiterService) {
+
+    private final AddressService addressService;
+
+    private final EstablishmentService establishmentService;
+    public DataInitializer(RecruiterService recruiterService, AddressService addressService, EstablishmentService establishmentService) {
         this.recruiterService = recruiterService;
+        this.addressService = addressService;
+        this.establishmentService = establishmentService;
     }
     @Override
     public void run(String... args) throws Exception {
@@ -21,6 +31,18 @@ public class DataInitializer implements CommandLineRunner {
             }
         } else {
             System.out.println("Recruiters already initialized");
+        }
+
+        if (addressService.getNumberOfAddresses() < 1) {
+            addressService.createAddress(new Address("123", "Main Street", "Apt 456", "Gilles-la-Forêt", "39119", "Îles Mineures Éloignées des États-Unis"));
+        } else {
+            System.out.println("Addresses already initialized");
+        }
+
+        if (establishmentService.getNumberOfEstablishments() < 1) {
+            establishmentService.createEstablishment(new Establishment("mcdo", 1, 1));
+        } else {
+            System.out.println("Establishments already initialized");
         }
     }
     private static List<RecruiterUserRequest> getRecruiterUserList() {

@@ -53,24 +53,9 @@ public class JobService {
         }
     }
 
-    public EstablishmentDTO getEstablishmentById(Long id) {
-        ResponseEntity<EstablishmentDTO> response = restTemplate.exchange(
-                recruiterApiUrl + "/api/establishments/" + id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<EstablishmentDTO>() {}
-        );
-
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            return null;
-        }
-    }
-
     public String getEstablishmentAddress(Long establishmentAddressId) {
         ResponseEntity<String> response = restTemplate.exchange(
-                recruiterApiUrl + "/api/addresses/city/" + establishmentAddressId,
+                recruiterApiUrl + "/api/public/addresses/city/" + establishmentAddressId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<String>() {}
