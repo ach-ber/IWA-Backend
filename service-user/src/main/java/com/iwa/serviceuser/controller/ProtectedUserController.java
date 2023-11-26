@@ -38,10 +38,10 @@ public class ProtectedUserController {
         return ResponseEntity.ok("Logged out successfully");
     }
     @GetMapping("/userInfo")
-    public ResponseEntity<String> userInfo(@RequestHeader("X-User-Roles") String roles) {
-        if (roles == null) {
+    public ResponseEntity<?> userInfo(@RequestHeader("X-User-Email") String email) {
+        if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
-        return ResponseEntity.ok("User role: " + roles);
+        return service.getInfosUser(email);
     }
 }

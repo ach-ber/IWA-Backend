@@ -24,6 +24,8 @@ public class User {
     @Size(min = 6)
     private String password;
 
+    private Long id_recruiter;
+
     public User(RecruiterUserRequest recruiterUserRequest) {
         this.email = recruiterUserRequest.getEmail();
         this.role = recruiterUserRequest.getSubscription();

@@ -33,8 +33,12 @@ public class JwtUtil {
 
     public String getRole(final String token) {
         String role = (String) Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().get("role");
-        System.out.println("role: " + role);
         return role;
+    }
+
+    public String getEmail(final String token) {
+        String email = (String) Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
+        return email;
     }
 
     private Key getSignKey() {

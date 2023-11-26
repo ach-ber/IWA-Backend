@@ -16,19 +16,13 @@ public class ProtectedRecruiterController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @GetMapping("/test")
-    public String testProtected(){
-        return "test protected";
-    }
-
     @GetMapping("/admin/test")
     @PreAuthorize("hasRole('ADMIN')")
     public String testProtectedAdmin(){
         return "test protected admin";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','FREE','SILVER','GOLD','PLATINUM')")
     @PutMapping("/{id}")
     public ResponseEntity<Recruiter> updateRecruiter(@PathVariable Long id, @RequestBody Recruiter updatedRecruiter) {
         return service.updateRecruiter(id, updatedRecruiter)

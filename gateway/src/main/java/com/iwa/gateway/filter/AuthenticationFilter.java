@@ -34,6 +34,16 @@ public class AuthenticationFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        // disable cors and csrf
+        exchange.getRequest().mutate()
+                .header(HttpHeaders.ORIGIN, "*")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*")
+                .header(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
+
         if (validator.isSecured.test(exchange.getRequest())) {
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Missing authorization header");
@@ -60,7 +70,10 @@ public class AuthenticationFilter implements GatewayFilter {
                 }
 
                 String role = jwtUtil.getRole(authHeader);
+                String email = jwtUtil.getEmail(authHeader);
                 exchange.getRequest().mutate().header("X-User-Roles", role);
+                exchange.getRequest().mutate().header("X-User-Email", email);
+                System.out.println("request: " + exchange.getRequest().getHeaders());
 
             } catch (Exception e) {
                 return setErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");

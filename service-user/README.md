@@ -1,13 +1,30 @@
 # USER-SERVICE
 
-## Register an user
+## Roles
 
-POST 'http://localhost:7000/auth/register' \
+Les rôles existants sont :
+- ADMIN
+- FREE
+- SILVER
+- GOLD
+- PLATINUM
+
+## Register an Recruiter ( automatically create an User )
+
+POST 'http://localhost:8090/recruiter/api/public/recruiters' \
 --data-raw JSON :
 {
-    "name":"Basant",
-    "password":"Pwd1",
-    "email":"basant@gmail.com"
+"firstName": "admin",
+"lastName": "admin",
+"phone": "1234567890",
+"email": "admin@example.com",
+"createdAt": "2023-11-22",
+"subscription": "USER_ADMIN",
+"subscription_startDate": "2023-11-22",
+"subscription_endDate": "2024-11-22",
+"company_id": 123,
+"establishments": [456, 789],
+"password":"admin"
 }
 
 ## Get Token
@@ -15,15 +32,13 @@ POST 'http://localhost:7000/auth/register' \
 POST 'http://localhost:7000/auth/token' \
 --data-raw JSON :
 {
-    "username":"Basant",
-    "password":"Pwd1"
+"email": "admin@example.com",
+"password":"admin"
 }
 
-## Request a protected resource
+## Get User Infos
 
-GET 'http://localhost:8090/test/api/chefs' \
-
-Bearer Token : token
+GET 'http://localhost:8090/user/api/protected/userInfo' \
 
 ## Connect DBeaver to the database (PostgreSQL)
 

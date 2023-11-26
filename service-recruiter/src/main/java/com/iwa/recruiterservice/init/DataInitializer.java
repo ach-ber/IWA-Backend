@@ -25,9 +25,14 @@ public class DataInitializer implements CommandLineRunner {
     }
     private static List<RecruiterUserRequest> getRecruiterUserList() {
         List<RecruiterUserRequest> listRecruiterUserRequests = new ArrayList<>();
-        RecruiterUserRequest recruiterUser = new RecruiterUserRequest(
+        RecruiterUserRequest recruiterFree = new RecruiterUserRequest(
                 "John", "Doe", "password", "0600000000", "JohnDoe@gmail.com",
-                LocalDate.now(), "ROLE_USER",
+                LocalDate.now(), "ROLE_FREE",
+                LocalDate.now(), null, 1, null);
+
+        RecruiterUserRequest recruiterGold = new RecruiterUserRequest(
+                "Peter", "Martin", "password", "0600000000", "PeterMartin@gmail.com",
+                LocalDate.now(), "ROLE_GOLD",
                 LocalDate.now(), null, 1, null);
 
         RecruiterUserRequest recruiterAdmin = new RecruiterUserRequest(
@@ -35,7 +40,8 @@ public class DataInitializer implements CommandLineRunner {
                 LocalDate.now(), "ROLE_ADMIN",
                 LocalDate.now(), null, 1, null);
 
-        listRecruiterUserRequests.add(recruiterUser);
+        listRecruiterUserRequests.add(recruiterFree);
+        listRecruiterUserRequests.add(recruiterGold);
         listRecruiterUserRequests.add(recruiterAdmin);
         return listRecruiterUserRequests;
     }

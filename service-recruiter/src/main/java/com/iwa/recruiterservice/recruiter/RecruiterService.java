@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class RecruiterService {
@@ -32,6 +31,7 @@ public class RecruiterService {
         User user = new User(recruiterUserRequest);
         try {
             response = new ResponseEntity<>(addRecruiter(recruiter), HttpStatus.CREATED);
+            Long id_recruiter = Objects.requireNonNull(response.getBody()).getId();
             try {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -39,6 +39,7 @@ public class RecruiterService {
                 requestBody.put("email", user.getEmail());
                 requestBody.put("role", user.getRole());
                 requestBody.put("password", user.getPassword());
+                requestBody.put("id_recruiter", id_recruiter.toString());
                 HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
                 restTemplate.postForObject(userServiceUrl + "/api/public/register", request, String.class);
             } catch (Exception e) {
