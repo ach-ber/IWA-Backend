@@ -86,7 +86,7 @@ public class JobService {
         return matchingService.getMatchingCandidates(candidates, job);
     }
 
-    public Optional<List<Candidate>> getMatchedCandidatesOrdered(Long id, String city) {
+    public Optional<List<CandidateDTO>> getMatchedCandidatesOrdered(Long id, String city) {
         Optional<Job> job = getById(id);
         if (job == null) {
             return null;
@@ -102,7 +102,11 @@ public class JobService {
                 matchingService.setCandidateScore(candidate, job.get().getCategory_key(), getCandidateReview(candidate.getId()));
             }
             matchingCandidates.sort((c1, c2) -> Double.compare(c2.getScore(), c1.getScore()));
-            return Optional.of(matchingCandidates);
+            List<CandidateDTO> matchingCandidatesDto = new ArrayList<>();
+            for (Candidate candidate : matchingCandidates) {
+                matchingCandidatesDto.add(new CandidateDTO(candidate.getId(), candidate.getName().split(" ")[0], candidate.getName().split(" ")[1], candidate.getPhoto(), candidate.getPhone(), candidate.getEmail()));
+            }
+            return Optional.of(matchingCandidatesDto);
         }
     }
 

@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/protected/jobs")
+@RequestMapping("/api/jobs")
 public class JobController {
 
     private final JobService service;
@@ -56,9 +57,13 @@ public class JobController {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("hasRole('ROLE_PLATINUM') || hasRole('ROLE_GOLD')")
+    public CandidateDTO convertToFreeUser(CandidateDTO candidateDTO) {
+        candidateDTO.setPhone(null);
+        candidateDTO.setEmail(null);
+        return candidateDTO;
+    }
     @GetMapping("/matchedcandidates/{id}")
-    public ResponseEntity<List<Candidate>> getMatchedCandidatesOrdered(@PathVariable Long id) {
+    public ResponseEntity<List<CandidateDTO>> getMatchedCandidatesOrdered(@PathVariable Long id, @RequestParam(required = false) String role) {
         Job job = service.getById(id).orElse(null);
         if (job == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,34 +72,23 @@ public class JobController {
         if (city == null || city.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return service.getMatchedCandidatesOrdered(id, city)
-                .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        switch (role) {
+            case "ROLE_FREE":
+                return service.getMatchedCandidatesOrdered(id, city)
+                        .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates.stream().map(candidate -> convertToFreeUser(candidate)).collect(Collectors.toList()).subList(0, 5)))
+                        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+            case "ROLE_SILVER":
+                return service.getMatchedCandidatesOrdered(id, city)
+                        .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates.stream().collect(Collectors.toList()).subList(0, 10)))
+                        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            default:
+                return service.getMatchedCandidatesOrdered(id, city)
+                        .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates))
+                        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }
     }
 
-    /*
-    @PreAuthorize("hasRole('ROLE_FREE')")
-    @GetMapping("/matchedcandidates/{id}")
-    public ResponseEntity<List<CandidateDTO>> getFreeMatchedCandidatesOrdered(@PathVariable Long id) {
-        Job job = service.getById(id).orElse(null);
-        if (job == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        String city = service.getEstablishmentAddress(job.getEstablishment_key());
-        if (city == null || city.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return service.getMatchedCandidatesOrdered(id, city)
-                .map(candidates -> {
-                    candidates.stream().map(candidate -> {
-                        candidate.set
-                    });
-                    return ResponseEntity.status(HttpStatus.OK).body(candidatesInfos);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-     */
 
     @GetMapping("/candidates")
     public List<CandidateDTO> getAllCandidates() {
