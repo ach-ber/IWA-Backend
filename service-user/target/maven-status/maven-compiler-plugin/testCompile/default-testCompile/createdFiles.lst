@@ -1,0 +1,5 @@
+com\iwa\serviceuser\UserDatabaseTests.class
+com\iwa\serviceuser\controller\PublicUserControllerTest.class
+com\iwa\serviceuser\service\JwtServiceTest.class
+com\iwa\serviceuser\controller\ProtectedUserControllerTest.class
+com\iwa\serviceuser\ServiceUserApplicationTests.class

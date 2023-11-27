@@ -7,6 +7,7 @@ import com.iwa.jobservice.jobcategory.JobcategoryService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

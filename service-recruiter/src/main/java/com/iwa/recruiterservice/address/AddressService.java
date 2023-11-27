@@ -15,8 +15,12 @@ public class AddressService {
     }
 
     @Transactional
-    public Address createAddress(Address address){
-        return this.addressRepository.save(address);
+    public Address createAddress(Address address) {
+        if (address != null) {
+            return addressRepository.save(address);
+        } else {
+            throw new IllegalArgumentException("Address must not be null");
+        }
     }
 
     public Long getNumberOfAddresses(){
