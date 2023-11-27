@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChefService {
@@ -27,12 +28,46 @@ public class ChefService {
         return chef;
     }
 
+    @Transactional
+    public Chef createChef(Chef chef){
+        return this.chefRepository.save(chef);
+    }
+
     public List<Chef> getChefs(){
         System.out.println(this.chefRepository.findAll());
         return this.chefRepository.findAll();
     }
 
+    public Optional<Chef> getChefById(Long id){
+        return this.chefRepository.findById(id);
+    }
+
     public Long getNumberOfChefs(){
         return this.chefRepository.count();
+    }
+
+    @Transactional
+    public boolean deleteChefById(Long id){
+        if (this.chefRepository.existsById(id)){
+            this.chefRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Optional<Chef> updateChefById(Long id, Chef chef){
+        Optional<Chef> existingChef = this.chefRepository.findById(id);
+
+        if (existingChef != null){
+            chef.setId(id);
+            return Optional.of(this.chefRepository.save(chef));
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteAllChefs(){
+        this.chefRepository.deleteAll();
     }
 }
