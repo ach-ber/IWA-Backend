@@ -6,8 +6,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,14 +29,11 @@ public class JobService {
     private final RestTemplate restTemplate;
     private JobRepository jobRepository;
 
-    private JobcategoryService jobcategoryService;
-
     private MatchingService matchingService;
 
-    public JobService(JobRepository jobRepository, RestTemplate restTemplate, JobcategoryService jobcategoryService, MatchingService matchingService) {
+    public JobService(JobRepository jobRepository, RestTemplate restTemplate, MatchingService matchingService) {
         this.restTemplate = restTemplate;
         this.jobRepository = jobRepository;
-        this.jobcategoryService = jobcategoryService;
         this.matchingService = matchingService;
     }
 

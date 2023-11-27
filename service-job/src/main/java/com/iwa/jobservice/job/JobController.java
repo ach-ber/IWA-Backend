@@ -5,12 +5,14 @@ import com.iwa.jobservice.matching.Candidate;
 import com.iwa.jobservice.matching.CandidateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/api/protected/jobs")
 public class JobController {
 
     private final JobService service;
@@ -54,6 +56,7 @@ public class JobController {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PreAuthorize("hasRole('ROLE_PLATINUM') || hasRole('ROLE_GOLD')")
     @GetMapping("/matchedcandidates/{id}")
     public ResponseEntity<List<Candidate>> getMatchedCandidatesOrdered(@PathVariable Long id) {
         Job job = service.getById(id).orElse(null);
@@ -68,6 +71,30 @@ public class JobController {
                 .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // TODO: Implement this method
+    /*
+    @PreAuthorize("hasRole('ROLE_FREE')")
+    @GetMapping("/matchedcandidates/{id}")
+    public ResponseEntity<List<CandidateDTO>> getFreeMatchedCandidatesOrdered(@PathVariable Long id) {
+        Job job = service.getById(id).orElse(null);
+        if (job == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        String city = service.getEstablishmentAddress(job.getEstablishment_key());
+        if (city == null || city.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return service.getMatchedCandidatesOrdered(id, city)
+                .map(candidates -> {
+                    List<?> candidatesInfos = new ArrayList<>();
+
+                    return ResponseEntity.status(HttpStatus.OK).body(candidatesInfos);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+     */
 
     @GetMapping("/candidates")
     public List<CandidateDTO> getAllCandidates() {
