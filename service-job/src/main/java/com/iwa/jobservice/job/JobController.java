@@ -72,7 +72,6 @@ public class JobController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // TODO: Implement this method
     /*
     @PreAuthorize("hasRole('ROLE_FREE')")
     @GetMapping("/matchedcandidates/{id}")
@@ -87,8 +86,9 @@ public class JobController {
         }
         return service.getMatchedCandidatesOrdered(id, city)
                 .map(candidates -> {
-                    List<?> candidatesInfos = new ArrayList<>();
-
+                    candidates.stream().map(candidate -> {
+                        candidate.set
+                    });
                     return ResponseEntity.status(HttpStatus.OK).body(candidatesInfos);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
