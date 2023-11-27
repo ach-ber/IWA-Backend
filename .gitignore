@@ -134,3 +134,5 @@ dist
 fake_candidates.json
 
 .idea/
+
+target/
