@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -30,17 +31,24 @@ public class ReviewService {
     }
 
     public Optional<CandidateDTO> getCandidateById(String id) {
-        ResponseEntity<CandidateDTO> response = restTemplate.exchange(
-                candidatesApiUrl + "/candidates/" + id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<CandidateDTO>() {}
-        );
 
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return Optional.ofNullable(response.getBody());
-        } else {
-            return null;
+        try {
+            ResponseEntity<CandidateDTO> response = restTemplate.exchange(
+                    candidatesApiUrl + "/candidates/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<CandidateDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
         }
     }
 
@@ -61,8 +69,7 @@ public class ReviewService {
         List<ReviewDTO> res = new ArrayList<>();
         if (reviews == null || reviews.isEmpty()) {
             return Collections.emptyList();
-        }
-        else {
+        } else {
             CandidateDTO candidate;
             for (Review review : reviews) {
                 candidate = getCandidateById(review.getCandidateId()).orElse(null);
@@ -148,8 +155,8 @@ public class ReviewService {
     }
 
     public List<ReviewDTO> getRecruiterReviews(Long id) {
-            return getReviews().stream()
-                    .filter(review -> review.getReview().getRecruiterId().equals(id))
-                    .collect(Collectors.toList());
+        return getReviews().stream()
+                .filter(review -> review.getReview().getRecruiterId().equals(id))
+                .collect(Collectors.toList());
     }
 }
