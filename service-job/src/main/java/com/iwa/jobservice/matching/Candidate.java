@@ -7,6 +7,10 @@ public class Candidate implements Comparable {
 
     private String name;
 
+    private String email;
+    private String phone;
+    private String photo;
+
     private List<ExperienceDTO> experiences;
 
     private List<AvailabilityDTO> availabilities;
@@ -21,6 +25,9 @@ public class Candidate implements Comparable {
     public Candidate(CandidateDTO candidateDTO, double score) {
         this.id = candidateDTO.getId();
         this.name = candidateDTO.getFirstname() + " " + candidateDTO.getLastname();
+        this.email = candidateDTO.getEmail();
+        this.phone = candidateDTO.getPhone();
+        this.photo = candidateDTO.getPhoto();
         this.experiences = candidateDTO.getExperiences();
         this.availabilities = candidateDTO.getAvailabilities();
         this.opinions = candidateDTO.getOpinions();
@@ -88,6 +95,30 @@ public class Candidate implements Comparable {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Override

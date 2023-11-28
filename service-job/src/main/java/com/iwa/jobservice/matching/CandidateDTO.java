@@ -43,6 +43,22 @@ public class CandidateDTO {
         this.opinions = opinions;
     }
 
+    public CandidateDTO(String id, String lastname, String firstname, String photo, String phone, String email) {
+        this.id = id;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.photo = photo;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public CandidateDTO(String id, String lastname, String firstname, String photo) {
+        this.id = id;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.photo = photo;
+    }
+
     public String getId() {
         return id;
     }
