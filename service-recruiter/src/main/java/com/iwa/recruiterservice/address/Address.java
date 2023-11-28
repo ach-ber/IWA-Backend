@@ -20,7 +20,8 @@ public class Address {
     public Address() {
     }
 
-    public Address(String streetNum, String street, String complement, String city, String zipCode, String country) {
+    public Address(Long id, String streetNum, String street, String complement, String city, String zipCode, String country) {
+        this.id = id;
         this.streetNum = streetNum;
         this.street = street;
         this.complement = complement;
@@ -29,8 +30,7 @@ public class Address {
         this.country = country;
     }
 
-    public Address(Long id, String streetNum, String street, String complement, String city, String zipCode, String country) {
-        this.id = id;
+    public Address(String streetNum, String street, String complement, String city, String zipCode, String country) {
         this.streetNum = streetNum;
         this.street = street;
         this.complement = complement;
