@@ -1,6 +1,8 @@
 package com.iwa.reviewservice.review;
 
 import com.iwa.reviewservice.dto.CandidateDTO;
+import com.iwa.reviewservice.dto.JobDTO;
+import com.iwa.reviewservice.dto.RecruiterDTO;
 import com.iwa.reviewservice.dto.ReviewDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,12 @@ public class ReviewService {
     @Value("${candidates.api.url}")
     private String candidatesApiUrl;
 
+    @Value("${jobs.api.url}")
+    private String jobsApiUrl;
+
+    @Value("${recruiters.api.url}")
+    private String recruitersApiUrl;
+
     private final RestTemplate restTemplate;
 
     private ReviewRepository reviewRepository;
@@ -38,6 +46,50 @@ public class ReviewService {
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<CandidateDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<RecruiterDTO> getRecruiterById(Long id) {
+
+        try {
+            ResponseEntity<RecruiterDTO> response = restTemplate.exchange(
+                    recruitersApiUrl + "/api/recruiters/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<RecruiterDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<JobDTO> getJobById(Long id) {
+
+        try {
+            ResponseEntity<JobDTO> response = restTemplate.exchange(
+                    jobsApiUrl + "/api/jobs/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<JobDTO>() {
                     }
             );
 
@@ -71,9 +123,13 @@ public class ReviewService {
             return Collections.emptyList();
         } else {
             CandidateDTO candidate;
+            JobDTO job;
+            RecruiterDTO recruiter;
             for (Review review : reviews) {
                 candidate = getCandidateById(review.getCandidateId()).orElse(null);
-                res.add(new ReviewDTO(review, candidate));
+                job = getJobById(review.getJobId()).orElse(null);
+                recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
+                res.add(new ReviewDTO(review, candidate, job, recruiter));
             }
             return res;
         }
@@ -84,7 +140,10 @@ public class ReviewService {
         if (review == null) {
             return Optional.empty();
         }
-        return Optional.of(new ReviewDTO(review, getCandidateById(review.getCandidateId()).orElse(null)));
+        CandidateDTO candidate = getCandidateById(review.getCandidateId()).orElse(null);
+        JobDTO job = getJobById(review.getJobId()).orElse(null);
+        RecruiterDTO recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
+        return Optional.of(new ReviewDTO(review, candidate, job, recruiter));
     }
 
     @Transactional
