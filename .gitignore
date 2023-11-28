@@ -135,10 +135,6 @@ fake_candidates.json
 
 .idea/
 
-<<<<<<< HEAD
 # Ignore psql-db-serviceuser
 psql-db-serviceuser/
-
-=======
->>>>>>> 40dfc2244e2749953c5f3c8f36a96fbfc40468dc
 target/
