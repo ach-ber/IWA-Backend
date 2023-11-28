@@ -1,20 +1,55 @@
 package com.iwa.reviewservice.review;
 
+import com.iwa.reviewservice.dto.CandidateDTO;
+import com.iwa.reviewservice.dto.ReviewDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
+
+    @Value("${candidates.api.url}")
+    private String candidatesApiUrl;
+
+    private final RestTemplate restTemplate;
+
     private ReviewRepository reviewRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, RestTemplate restTemplate) {
         this.reviewRepository = reviewRepository;
+        this.restTemplate = restTemplate;
+    }
+
+    public Optional<CandidateDTO> getCandidateById(String id) {
+
+        try {
+            ResponseEntity<CandidateDTO> response = restTemplate.exchange(
+                    candidatesApiUrl + "/candidates/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<CandidateDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
     }
 
     @Transactional
@@ -29,12 +64,27 @@ public class ReviewService {
         return this.reviewRepository.count();
     }
 
-    public List<Review> getReviews() {
-        return this.reviewRepository.findAll();
+    public List<ReviewDTO> getReviews() {
+        List<Review> reviews = this.reviewRepository.findAll();
+        List<ReviewDTO> res = new ArrayList<>();
+        if (reviews == null || reviews.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            CandidateDTO candidate;
+            for (Review review : reviews) {
+                candidate = getCandidateById(review.getCandidateId()).orElse(null);
+                res.add(new ReviewDTO(review, candidate));
+            }
+            return res;
+        }
     }
 
-    public Optional<Review> getReviewById(Long id) {
-        return this.reviewRepository.findById(id);
+    public Optional<ReviewDTO> getReviewById(Long id) {
+        Review review = this.reviewRepository.findById(id).orElseGet(null);
+        if (review == null) {
+            return Optional.empty();
+        }
+        return Optional.of(new ReviewDTO(review, getCandidateById(review.getCandidateId()).orElse(null)));
     }
 
     @Transactional
@@ -102,5 +152,11 @@ public class ReviewService {
             // For example, log an error or return an empty list
             return Collections.emptyList();
         }
+    }
+
+    public List<ReviewDTO> getRecruiterReviews(Long id) {
+        return getReviews().stream()
+                .filter(review -> review.getReview().getRecruiterId().equals(id))
+                .collect(Collectors.toList());
     }
 }

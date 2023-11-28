@@ -1,5 +1,6 @@
 package com.iwa.reviewservice.review;
 
+import com.iwa.reviewservice.dto.ReviewDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,20 @@ public class ReviewController {
     }
 
     @GetMapping
-    public List<Review> getAllReviews() {
+    public List<ReviewDTO> getAllReviews() {
         return service.getReviews();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
+    public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Long id) {
         return service.getReviewById(id)
             .map(review -> new ResponseEntity<>(review, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/recruiter/{id}")
+    public List<ReviewDTO> getRecruiterReviews(@PathVariable Long id) {
+        return service.getRecruiterReviews(id);
     }
 
     @PostMapping

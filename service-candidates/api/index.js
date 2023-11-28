@@ -8,7 +8,7 @@ app.get("/candidates", (req, res) => {
 })
 
 app.get("/candidates/:id", (req, res) => {
-    const candidates = require(__dirname + "/fake_candidates.json").candidates
+    const candidates = require(__dirname + "/fake_candidates.json")
     const candidate = candidates.find(c => c.id == req.params.id)
     if (candidate) {
         res.json(candidate)
