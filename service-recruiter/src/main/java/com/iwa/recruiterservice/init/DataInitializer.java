@@ -3,6 +3,8 @@ import com.iwa.recruiterservice.address.Address;
 import com.iwa.recruiterservice.address.AddressService;
 import com.iwa.recruiterservice.establishment.Establishment;
 import com.iwa.recruiterservice.establishment.EstablishmentService;
+
+import com.iwa.recruiterservice.recruiter.Recruiter;
 import com.iwa.recruiterservice.recruiter.RecruiterService;
 import com.iwa.recruiterservice.recruiter.RecruiterUserRequest;
 import org.springframework.boot.CommandLineRunner;
