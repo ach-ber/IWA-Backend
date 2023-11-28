@@ -116,11 +116,11 @@ public class ReviewService {
         return this.reviewRepository.count();
     }
 
-    public List<ReviewDTO> getReviews() {
+    public Optional<List<ReviewDTO>> getReviews() {
         List<Review> reviews = this.reviewRepository.findAll();
         List<ReviewDTO> res = new ArrayList<>();
         if (reviews == null || reviews.isEmpty()) {
-            return Collections.emptyList();
+            return Optional.of(Collections.emptyList());
         } else {
             CandidateDTO candidate;
             JobDTO job;
@@ -129,9 +129,12 @@ public class ReviewService {
                 candidate = getCandidateById(review.getCandidateId()).orElse(null);
                 job = getJobById(review.getJobId()).orElse(null);
                 recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
+                if (candidate == null || job == null || recruiter == null) {
+                    return null;
+                }
                 res.add(new ReviewDTO(review, candidate, job, recruiter));
             }
-            return res;
+            return Optional.of(res);
         }
     }
 
@@ -214,7 +217,10 @@ public class ReviewService {
     }
 
     public List<ReviewDTO> getRecruiterReviews(Long id) {
-        return getReviews().stream()
+        if (getReviews().isEmpty()) {
+            return null;
+        }
+        return getReviews().get().stream()
                 .filter(review -> review.getReview().getRecruiterId().equals(id))
                 .collect(Collectors.toList());
     }

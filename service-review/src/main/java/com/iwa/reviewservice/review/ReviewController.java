@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -18,8 +19,13 @@ public class ReviewController {
     }
 
     @GetMapping
-    public List<ReviewDTO> getAllReviews() {
-        return service.getReviews();
+    public ResponseEntity<List<ReviewDTO>> getAllReviews() {
+        Optional<List<ReviewDTO>> reviews = service.getReviews();
+        if (reviews.isPresent()) {
+            return new ResponseEntity<>(reviews.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")
@@ -30,8 +36,13 @@ public class ReviewController {
     }
 
     @GetMapping("/recruiter/{id}")
-    public List<ReviewDTO> getRecruiterReviews(@PathVariable Long id) {
-        return service.getRecruiterReviews(id);
+    public ResponseEntity<List<ReviewDTO>> getRecruiterReviews(@PathVariable Long id) {
+        List<ReviewDTO> reviews = service.getRecruiterReviews(id);
+        if (reviews != null) {
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
