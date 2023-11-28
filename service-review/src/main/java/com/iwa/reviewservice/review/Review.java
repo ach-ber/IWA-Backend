@@ -11,7 +11,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private int rating;
+    private Integer rating;
     private String comment;
     private Long recruiterId;
     private String candidateId;
@@ -47,11 +47,11 @@ public class Review {
         this.title = title;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
