@@ -1,0 +1,166 @@
+version: "3.8"
+services:
+  eureka:
+    container_name: eureka
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - gateway-network
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+    ports:
+      - "8090:8090"
+    networks:
+      - gateway-network
+    depends_on:
+      - eureka
+  psql-db-jobservice:
+    image: postgres
+    container_name: psql-db-jobservice
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=job
+    ports:
+      - '5433:5432'
+    networks:
+      - gateway-network
+  service-job:
+    container_name: service-job
+    build:
+      context: ./service-job
+      dockerfile: Dockerfile
+    ports:
+      - '8301:8301'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-jobservice:5432/job
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-jobservice
+      - eureka
+  psql-db-recruiterservice:
+    image: postgres
+    container_name: psql-db-recruiterservice
+    volumes:
+      - data-psql-db-recruiterservice:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=recruiter
+    ports:
+      - '5434:5432'
+    networks:
+      - gateway-network
+  service-recruiter:
+    container_name: service-recruiter
+    build:
+      context: ./service-recruiter
+      dockerfile: Dockerfile
+    ports:
+      - '8302:8302'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-recruiterservice:5432/recruiter
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-recruiterservice
+      - eureka
+      - service-user
+  service-candidates:
+    container_name: service-candidates
+    build:
+      context: ./service-candidates/api
+      dockerfile: Dockerfile
+    ports:
+      - '8303:8303'
+    # doesn’t need neither gateway
+    # nor eureka because it’s considered as an external service
+  service-user:
+    container_name: service-user
+    build:
+      context: ./service-user
+    ports:
+      - "7000:7000"
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-serviceuser:5432/users
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-serviceuser
+      - eureka
+  psql-db-serviceuser:
+    image: postgres
+    volumes:
+      - data-psql-db-serviceuser:/var/lib/postgresql/data
+    container_name: psql-db-serviceuser
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=users
+    ports:
+      - '5436:5432'
+    networks:
+      - gateway-network
+  service-ktlanding:
+    container_name: service-ktlanding
+    build:
+      context: ./service-ktlanding
+      dockerfile: Dockerfile
+    ports:
+      - '8305:8305'
+    networks:
+      - gateway-network
+    depends_on:
+      - eureka
+
+  psql-db-reviewservice:
+    image: postgres
+    container_name: psql-db-reviewservice
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=review
+    ports:
+      - '5435:5432'
+    networks:
+      - gateway-network
+  service-review:
+    container_name: service-review
+    build:
+      context: ./service-review
+      dockerfile: Dockerfile
+    ports:
+      - '8304:8304'
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-reviewservice:5432/review
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-reviewservice
+      - eureka
+
+networks:
+  gateway-network:
+    driver: bridge
+
+volumes:
+  data-psql-db-serviceuser:
+  data-psql-db-recruiterservice:

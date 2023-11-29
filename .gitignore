@@ -131,4 +131,13 @@ dist
 
 ## custom
 **.pyc
-fake_candidates.json
+
+.idea/
+
+target/
+# Ignore psql-db-serviceuser
+psql-db-serviceuser/
+
+# Ignore psql-db-serviceuser
+psql-db-serviceuser/
+target/
