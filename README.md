@@ -22,3 +22,8 @@ Pour build un module en particulier (ex: si `service-job` a été modifié) :
 ## run
 
 `docker-compose up`
+
+## drop tables
+psql -U admin -d <nom_de_la_bd>
+\d
+DROP TABLE <nom_de_la_table>;
