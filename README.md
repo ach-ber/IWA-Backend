@@ -25,6 +25,10 @@ Pour build un module en particulier (ex: si `service-job` a été modifié) :
 
 ## drop tables
 
+Pour revenir au données initiales des `DataInitializer.java`, on peut drop les tables et au prochain démarrage l’init va remplir des données.
+
+Procédure :
+
 ```
 psql -U admin -d <nom_de_la_bd>
 \d
