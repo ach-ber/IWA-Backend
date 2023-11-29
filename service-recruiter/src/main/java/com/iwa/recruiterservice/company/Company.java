@@ -11,13 +11,13 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int siren;
-    private int[] establishments;
+    private Long siren;
+    private Long[] establishments;
 
     public Company() {
     }
 
-    public Company(String name, int siren, int[] establishments) {
+    public Company(String name, Long siren, Long[] establishments) {
         this.name = name;
         this.siren = siren;
         this.establishments = establishments;
@@ -39,19 +39,19 @@ public class Company {
         this.name = name;
     }
 
-    public int getSiren() {
+    public Long getSiren() {
         return siren;
     }
 
-    public void setSiren(int siren) {
+    public void setSiren(Long siren) {
         this.siren = siren;
     }
 
-    public int[] getEstablishments() {
+    public Long[] getEstablishments() {
         return establishments;
     }
 
-    public void setEstablishments(int[] establishments) {
+    public void setEstablishments(Long[] establishments) {
         this.establishments = establishments;
     }
 }

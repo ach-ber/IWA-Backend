@@ -41,7 +41,7 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (establishmentService.getNumberOfEstablishments() < 1) {
-            establishmentService.createEstablishment(new Establishment("mcdo", 1, 1));
+            establishmentService.createEstablishment(new Establishment("mcdo", 1L, 1L));
         } else {
             System.out.println("Establishments already initialized");
         }
