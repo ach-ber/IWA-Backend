@@ -41,52 +41,42 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Recruiters already initialized");
         }
 
-        addressService.deleteAll();
-        if (addressService.getNumberOfAddresses() < 5) {
-            addressService.createAddress(new Address(1L, "123", "Main Street", "Apt 456", "Gilles-la-Forêt", "39119", "Îles Mineures Éloignées des États-Unis"));
-            addressService.createAddress(new Address(2L, "1", "Place de Londres", "", "Montpellier", "34000", "France"));
-            addressService.createAddress(new Address(3L, "1", "Place Eugene Bataillon", "Polytech, batiment 36", "Montpellier", "34000", "France"));
-            addressService.createAddress(new Address(4L, "1", "rue connue", "Polytech", "Paris", "75000", "France"));
-            addressService.createAddress(new Address(5L, "1", "Avenue des Champs Élysées", "", "Paris", "75000", "France"));
+        if (addressService.getNumberOfAddresses() < 1) {
+            addressService.createAddress(new Address("1", "rue de la paix", "apt 12", "Paris", "75000", "France"));
+            addressService.createAddress(new Address("2", "rue de la république", "apt 34", "Montpellier", "34000", "France"));
+            addressService.createAddress(new Address("3", "rue des champs élysées", "", "Paris", "75000", "France"));
         } else {
             System.out.println("Addresses already initialized");
         }
 
-        establishmentService.deleteAll();
-        if (establishmentService.getNumberOfEstablishments() < 4) {
-            establishmentService.createEstablishment(new Establishment(1L, "McDonalds Odysseum", 123456789_00001L, 2L));
-            establishmentService.createEstablishment(new Establishment(2L, "McDonalds Champs", 123456780_00002L, 5L));
-            establishmentService.createEstablishment(new Establishment(3L, "Polytech Montpellier", 123456780_00001L, 3L));
-            establishmentService.createEstablishment(new Establishment(4L, "Polytech Paris", 123456780_00002L, 4L));
+        if (establishmentService.getNumberOfEstablishments() < 1) {
+            establishmentService.createEstablishment(new Establishment("McDonald's Champs Elysée", 123456789_00001L, 3L));
+            establishmentService.createEstablishment(new Establishment("McDonald's Montpellier", 123456789_00002L, 2L));
+            establishmentService.createEstablishment(new Establishment("KFC Paris", 987654321_00001L, 1L));
         } else {
             System.out.println("Establishments already initialized");
         }
 
-        companyService.deleteAll();
-        if (companyService.getNumberOfCompanies() < 2) {
-            companyService.createCompany(new Company("McDonalds", 123456789L, new Long[]{1L, 2L}));
-            companyService.createCompany(new Company("Polytech", 123456780L, new Long[]{3L, 4L}));
+        if (companyService.getNumberOfCompanies() < 1) {
+            companyService.createCompany(new Company("McDonald's", 123456789L, new Long[]{1L, 2L}));
+            companyService.createCompany(new Company("KFC", 987654321L, new Long[]{3L}));
+        } else {
+            System.out.println("Companies already initialized");
         }
     }
     private static List<RecruiterUserRequest> getRecruiterUserList() {
         List<RecruiterUserRequest> listRecruiterUserRequests = new ArrayList<>();
         RecruiterUserRequest recruiterFree = new RecruiterUserRequest(
-                "John", "Doe", "password", "0600000000", "JohnDoe@gmail.com",
+                "Free", "User", "free", "0600000000", "free@gmail.com",
                 LocalDate.now(), "ROLE_FREE",
-                LocalDate.now(), null, 1, null);
-
-        RecruiterUserRequest recruiterGold = new RecruiterUserRequest(
-                "Peter", "Martin", "password", "0600000000", "PeterMartin@gmail.com",
-                LocalDate.now(), "ROLE_GOLD",
-                LocalDate.now(), null, 1, null);
+                LocalDate.now(), null, 1L, new Long[]{1L, 2L});
 
         RecruiterUserRequest recruiterAdmin = new RecruiterUserRequest(
                 "admin", "admin", "admin", "0600000000", "admin@gmail.com",
                 LocalDate.now(), "ROLE_ADMIN",
-                LocalDate.now(), null, 1, null);
+                LocalDate.now(), null, 2L, new Long[]{3L});
 
         listRecruiterUserRequests.add(recruiterFree);
-        listRecruiterUserRequests.add(recruiterGold);
         listRecruiterUserRequests.add(recruiterAdmin);
         return listRecruiterUserRequests;
     }

@@ -133,10 +133,9 @@ public class ReviewService {
                 candidate = getCandidateById(review.getCandidateId()).orElse(null);
                 job = getJobById(review.getJobId()).orElse(null);
                 recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
-                if (candidate == null || job == null || recruiter == null) {
-                    return null;
+                if (!(candidate == null || job == null || recruiter == null)) {
+                    res.add(new ReviewDTO(review, candidate, job, recruiter));
                 }
-                res.add(new ReviewDTO(review, candidate, job, recruiter));
             }
             return Optional.of(res);
         }
