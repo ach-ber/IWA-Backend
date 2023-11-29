@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/public/reviews")
 public class ReviewController {
 
     private final ReviewService service;

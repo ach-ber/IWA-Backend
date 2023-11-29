@@ -1,5 +1,9 @@
 # Génération des candidats
 
+Un fichier a déjà été généré, voir [fake_candidates.json](../api/fake_candidates.json).
+
+Néanmoins, si vous voulez construire votre propre fichier, voici les instructions :
+
 ## Installation et utilisation
 
 ```bash
