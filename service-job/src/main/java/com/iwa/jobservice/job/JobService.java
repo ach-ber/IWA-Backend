@@ -69,7 +69,7 @@ public class JobService {
 
     public List<ReviewDTO> getCandidateReview(String candidateId) {
         ResponseEntity<List<ReviewDTO>> response = restTemplate.exchange(
-                reviewApiUrl + "/api/reviews/candidate/" + candidateId,
+                reviewApiUrl + "/api/public/reviews/candidate/" + candidateId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ReviewDTO>>() {}

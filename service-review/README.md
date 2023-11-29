@@ -8,4 +8,4 @@ permet le CRUD review
 
 ### Variables d'environnement
 
-remplacer localIp par l'ip de la machine dans le fichier application.properties
+remplacer `<contributor-ip>` par l'ip de la machine dans le fichier `src/main/resources/application.properties`
