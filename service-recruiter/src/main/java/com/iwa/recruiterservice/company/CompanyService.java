@@ -1,5 +1,8 @@
 package com.iwa.recruiterservice.company;
 
+import com.iwa.recruiterservice.address.Address;
+import com.iwa.recruiterservice.address.AddressService;
+import com.iwa.recruiterservice.dto.AddressDTO;
 import com.iwa.recruiterservice.dto.CompanyDTO;
 import com.iwa.recruiterservice.dto.EstablishmentDTO;
 import com.iwa.recruiterservice.establishment.EstablishmentService;
@@ -15,9 +18,12 @@ public class CompanyService {
     private CompanyRepository companyRepository;
     private final EstablishmentService establishmentService;
 
-    public CompanyService(CompanyRepository companyRepository, EstablishmentService establishmentService) {
+    private final AddressService addressService;
+
+    public CompanyService(CompanyRepository companyRepository, EstablishmentService establishmentService, AddressService addressService) {
         this.companyRepository = companyRepository;
         this.establishmentService = establishmentService;
+        this.addressService = addressService;
     }
 
     @Transactional
@@ -49,7 +55,9 @@ public class CompanyService {
             List<EstablishmentDTO> establishments = new ArrayList<>();
             for (Long establishmentId : company.get().getEstablishments()) {
                 establishmentService.getEstablishmentById(establishmentId).ifPresent(establishment -> {
-                    establishments.add(new EstablishmentDTO(establishment.getId(), establishment.getName(), establishment.getSiret(), establishment.getAddressId()));
+                    Address address = addressService.getAddressById(establishment.getAddressId()).get();
+                    AddressDTO addressDTO = new AddressDTO(address.getId(), address.getStreetNum(), address.getStreet(), address.getComplement(), address.getCity(), address.getZipCode(), address.getCountry());
+                    establishments.add(new EstablishmentDTO(establishment.getId(), establishment.getName(), establishment.getSiret(), addressDTO));
                 });
             }
             return Optional.of(new CompanyDTO(existingCompany.getId(), existingCompany.getName(), existingCompany.getSiren(), establishments));

@@ -6,16 +6,16 @@ public class EstablishmentDTO  implements Serializable {
     private Long id;
     private String name;
     private Long siret;
-    private Long addressId;
+    private AddressDTO addressDTO;
 
     public EstablishmentDTO() {
     }
 
-    public EstablishmentDTO(Long id, String name, Long siret, Long addressId) {
+    public EstablishmentDTO(Long id, String name, Long siret, AddressDTO addressDTO) {
         this.id = id;
         this.name = name;
         this.siret = siret;
-        this.addressId = addressId;
+        this.addressDTO = addressDTO;
     }
 
     public Long getId() {
@@ -42,11 +42,11 @@ public class EstablishmentDTO  implements Serializable {
         this.siret = siret;
     }
 
-    public Long getAddressId() {
-        return addressId;
+    public AddressDTO getAddressDTO() {
+        return addressDTO;
     }
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+    public void setAddressDTO(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
     }
 }
