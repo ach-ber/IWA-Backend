@@ -1,5 +1,0 @@
-FROM amazoncorretto:17-alpine
-VOLUME /tmp
-EXPOSE 8300
-COPY target/service-test-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
