@@ -1,6 +1,8 @@
 package com.iwa.recruiterservice.init;
 import com.iwa.recruiterservice.address.Address;
 import com.iwa.recruiterservice.address.AddressService;
+import com.iwa.recruiterservice.company.Company;
+import com.iwa.recruiterservice.company.CompanyService;
 import com.iwa.recruiterservice.establishment.Establishment;
 import com.iwa.recruiterservice.establishment.EstablishmentService;
 
@@ -19,10 +21,14 @@ public class DataInitializer implements CommandLineRunner {
     private final AddressService addressService;
 
     private final EstablishmentService establishmentService;
-    public DataInitializer(RecruiterService recruiterService, AddressService addressService, EstablishmentService establishmentService) {
+
+    private final CompanyService companyService;
+
+    public DataInitializer(RecruiterService recruiterService, AddressService addressService, EstablishmentService establishmentService, CompanyService companyService) {
         this.recruiterService = recruiterService;
         this.addressService = addressService;
         this.establishmentService = establishmentService;
+        this.companyService = companyService;
     }
     @Override
     public void run(String ...args) throws Exception {
@@ -36,20 +42,30 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         addressService.deleteAll();
-        if (addressService.getNumberOfAddresses() < 1) {
-            addressService.createAddress(new Address("123", "Main Street", "Apt 456", "Gilles-la-Forêt", "39119", "Îles Mineures Éloignées des États-Unis"));
-            addressService.createAddress(new Address("1", "Place de Londres", "", "Montpellier", "34000", "France"));
-            addressService.createAddress(new Address("1", "Place Eugene Bataillon", "Polytech, batiment 36", "Montpellier", "34000", "France"));
+        if (addressService.getNumberOfAddresses() < 5) {
+            addressService.createAddress(new Address(1L, "123", "Main Street", "Apt 456", "Gilles-la-Forêt", "39119", "Îles Mineures Éloignées des États-Unis"));
+            addressService.createAddress(new Address(2L, "1", "Place de Londres", "", "Montpellier", "34000", "France"));
+            addressService.createAddress(new Address(3L, "1", "Place Eugene Bataillon", "Polytech, batiment 36", "Montpellier", "34000", "France"));
+            addressService.createAddress(new Address(4L, "1", "rue connue", "Polytech", "Paris", "75000", "France"));
+            addressService.createAddress(new Address(5L, "1", "Avenue des Champs Élysées", "", "Paris", "75000", "France"));
         } else {
             System.out.println("Addresses already initialized");
         }
 
         establishmentService.deleteAll();
-        if (establishmentService.getNumberOfEstablishments() < 2) {
-            establishmentService.createEstablishment(new Establishment("McDonalds", 123456789L, 2L));
-            establishmentService.createEstablishment(new Establishment("Polytech", 123456780L, 3L));
+        if (establishmentService.getNumberOfEstablishments() < 4) {
+            establishmentService.createEstablishment(new Establishment(1L, "McDonalds Odysseum", 123456789_00001L, 2L));
+            establishmentService.createEstablishment(new Establishment(2L, "McDonalds Champs", 123456780_00002L, 5L));
+            establishmentService.createEstablishment(new Establishment(3L, "Polytech Montpellier", 123456780_00001L, 3L));
+            establishmentService.createEstablishment(new Establishment(4L, "Polytech Paris", 123456780_00002L, 4L));
         } else {
             System.out.println("Establishments already initialized");
+        }
+
+        companyService.deleteAll();
+        if (companyService.getNumberOfCompanies() < 2) {
+            companyService.createCompany(new Company("McDonalds", 123456789L, new Long[]{1L, 2L}));
+            companyService.createCompany(new Company("Polytech", 123456780L, new Long[]{3L, 4L}));
         }
     }
     private static List<RecruiterUserRequest> getRecruiterUserList() {

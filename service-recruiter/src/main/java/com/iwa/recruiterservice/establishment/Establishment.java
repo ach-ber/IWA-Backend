@@ -23,6 +23,13 @@ public class Establishment {
         this.addressId = addressId;
     }
 
+    public Establishment(Long id, String name, Long siret, Long addressId) {
+        this.id = id;
+        this.name = name;
+        this.siret = siret;
+        this.addressId = addressId;
+    }
+
     public Long getId() {
         return id;
     }
