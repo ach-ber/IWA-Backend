@@ -1,5 +1,6 @@
 package com.iwa.recruiterservice.establishment;
 
+import com.iwa.recruiterservice.dto.EstablishmentDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,18 @@ public class EstablishmentController {
     public ResponseEntity<Establishment> getEstablishmentById(@PathVariable Long id) {
         return service.getEstablishmentById(id)
             .map(establishment -> new ResponseEntity<>(establishment, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/dto")
+    public List<EstablishmentDTO> getAllEstablishmentsDTO() {
+        return service.getEstablishmentsDTO();
+    }
+
+    @GetMapping("/dto/{id}")
+    public ResponseEntity<EstablishmentDTO> getEstablishmentDTOById(@PathVariable Long id) {
+        return service.getEstablishmentDTO(id)
+            .map(establishmentDTO -> new ResponseEntity<>(establishmentDTO, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
