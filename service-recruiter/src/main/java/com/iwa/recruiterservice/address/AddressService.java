@@ -55,4 +55,9 @@ public class AddressService {
             return null;
         }
     }
+
+    @Transactional
+    public void deleteAll() {
+        addressRepository.deleteAll();
+    }
 }

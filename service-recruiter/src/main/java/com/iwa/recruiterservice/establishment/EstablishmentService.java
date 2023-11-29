@@ -52,4 +52,8 @@ public class EstablishmentService {
             return null;
         }
     }
+
+    public void deleteAll() {
+        establishmentRepository.deleteAll();
+    }
 }
