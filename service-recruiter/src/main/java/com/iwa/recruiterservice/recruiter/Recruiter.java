@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Entity
@@ -40,8 +42,8 @@ public class Recruiter {
     private LocalDate subscription_startDate;
 
     private LocalDate subscription_endDate;
-    private int company_id;
-    private int[] establishments;
+    private Long company_id;
+    private Long[] establishments;
 
     public Recruiter() {
     }
@@ -52,7 +54,7 @@ public class Recruiter {
         this.email = email;
     }
 
-    public Recruiter(String firstName, String lastName, String phone, String email, LocalDate createdAt, String subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, int company_id, int[] establishments) {
+    public Recruiter(String firstName, String lastName, String phone, String email, LocalDate createdAt, String subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, Long company_id, Long[] establishments) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -150,19 +152,19 @@ public class Recruiter {
         this.subscription_endDate = subscription_endDate;
     }
 
-    public int getCompany_id() {
+    public Long getCompany_id() {
         return company_id;
     }
 
-    public void setCompany_id(int company_id) {
+    public void setCompany_id(Long company_id) {
         this.company_id = company_id;
     }
 
-    public int[] getEstablishments() {
+    public Long[] getEstablishments() {
         return establishments;
     }
 
-    public void setEstablishments(int[] establishments) {
+    public void setEstablishments(Long[] establishments) {
         this.establishments = establishments;
     }
 }

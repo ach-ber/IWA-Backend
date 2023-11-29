@@ -9,7 +9,7 @@ Les rôles existants sont :
 - GOLD
 - PLATINUM
 
-## Register an Recruiter ( automatically create an User )
+## Register an Recruiter (automatically create an User )
 
 POST 'http://localhost:8090/recruiter/api/public/recruiters' \
 --data-raw JSON :

@@ -1,6 +1,7 @@
 package com.iwa.recruiterservice.company;
 
 import com.iwa.recruiterservice.address.Address;
+import com.iwa.recruiterservice.dto.CompanyDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,12 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         return service.getCompanies();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Company> getCompanyById(@PathVariable Long id) {
+    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Long id) {
         return service.getCompanyById(id)
             .map(company -> new ResponseEntity<>(company, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

@@ -1,23 +1,19 @@
-package com.iwa.recruiterservice.company;
+package com.iwa.recruiterservice.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.io.Serializable;
+import java.util.List;
 
-@Entity
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CompanyDTO implements Serializable {
     private Long id;
     private String name;
     private Long siren;
-    private Long[] establishments;
+    private List<EstablishmentDTO> establishments;
 
-    public Company() {
+    public CompanyDTO() {
     }
 
-    public Company(String name, Long siren, Long[] establishments) {
+    public CompanyDTO(Long id, String name, Long siren, List<EstablishmentDTO> establishments) {
+        this.id = id;
         this.name = name;
         this.siren = siren;
         this.establishments = establishments;
@@ -47,11 +43,11 @@ public class Company {
         this.siren = siren;
     }
 
-    public Long[] getEstablishments() {
+    public List<EstablishmentDTO> getEstablishments() {
         return establishments;
     }
 
-    public void setEstablishments(Long[] establishments) {
+    public void setEstablishments(List<EstablishmentDTO> establishments) {
         this.establishments = establishments;
     }
 }

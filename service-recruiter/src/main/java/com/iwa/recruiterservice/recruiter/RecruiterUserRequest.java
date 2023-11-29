@@ -48,10 +48,10 @@ public class RecruiterUserRequest {
     private LocalDate subscription_startDate;
 
     private LocalDate subscription_endDate;
-    private int company_id;
-    private int[] establishments;
+    private Long company_id;
+    private Long[] establishments;
 
-    public RecruiterUserRequest(String firstName, String lastName, String password, String phone, String email, LocalDate createdAt, String subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, int company_id, int[] establishments) {
+    public RecruiterUserRequest(String firstName, String lastName, String password, String phone, String email, LocalDate createdAt, String subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, Long company_id, Long[] establishments) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;

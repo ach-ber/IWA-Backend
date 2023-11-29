@@ -11,13 +11,20 @@ public class Establishment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int siret;
-    private int addressId;
+    private Long siret;
+    private Long addressId;
 
     public Establishment() {
     }
 
-    public Establishment(String name, int siret, int addressId) {
+    public Establishment(String name, Long siret, Long addressId) {
+        this.name = name;
+        this.siret = siret;
+        this.addressId = addressId;
+    }
+
+    public Establishment(Long id, String name, Long siret, Long addressId) {
+        this.id = id;
         this.name = name;
         this.siret = siret;
         this.addressId = addressId;
@@ -39,19 +46,19 @@ public class Establishment {
         this.name = name;
     }
 
-    public int getSiret() {
+    public Long getSiret() {
         return siret;
     }
 
-    public void setSiret(int siret) {
+    public void setSiret(Long siret) {
         this.siret = siret;
     }
 
-    public int getAddressId() {
+    public Long getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
 }

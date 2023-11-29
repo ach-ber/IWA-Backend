@@ -47,6 +47,7 @@ public class ProtectedJobController {
         if (job == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        System.out.println("job: " + job.getEstablishment_key());
         String city = service.getEstablishmentAddress(job.getEstablishment_key());
         if (city == null || city.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
