@@ -139,4 +139,3 @@ target/
 # Ignore psql-db-serviceuser
 psql-db-serviceuser/
 
-target/

@@ -1,5 +1,5 @@
 package com.iwa.test.chef;
-
+/*
 import com.iwa.test.recipe.RecipeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-/*
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class ChefServiceTest {
@@ -86,5 +86,3 @@ public class ChefServiceTest {
         assertEquals(updatedChef.getName(), result.get().getName());
     }
 }
-
- */
