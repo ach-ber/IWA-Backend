@@ -134,6 +134,10 @@ dist
 
 .idea/
 
+target/
+# Ignore psql-db-serviceuser
+psql-db-serviceuser/
+
 # Ignore psql-db-serviceuser
 psql-db-serviceuser/
 target/

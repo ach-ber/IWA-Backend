@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @Service
@@ -77,18 +76,13 @@ public class UserService {
     }
 
     public ResponseEntity<?> getInfosUser(String email) {
+        Long id_recruiter;
         try {
-            List<User> users = repository.findAll();
-            User foundUser = users.stream().filter(user -> user.getEmail().equals(email)).findFirst().orElseThrow(() -> new UsernameNotFoundException("user not found with name :" + email));
-            if (foundUser == null) {
-                return ResponseEntity.ok("user is not a recruiter");
-            }
-            else {
-                return ResponseEntity.ok(foundUser);
-            }
+            id_recruiter = repository.findByEmail(email).get().getId_recruiter();
         } catch (Exception e) {
             throw new UsernameNotFoundException("user not found with name :" + email);
         }
+        return restTemplate.getForEntity("http://service-recruiter:8302/api/public/recruiters/" + id_recruiter, String.class);
     }
 
 }

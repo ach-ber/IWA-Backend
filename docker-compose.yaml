@@ -50,6 +50,8 @@ services:
   psql-db-recruiterservice:
     image: postgres
     container_name: psql-db-recruiterservice
+    volumes:
+      - data-psql-db-recruiterservice:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=1234
@@ -161,3 +163,4 @@ networks:
 
 volumes:
   data-psql-db-serviceuser:
+  data-psql-db-recruiterservice:
