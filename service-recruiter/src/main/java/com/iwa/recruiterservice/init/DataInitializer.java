@@ -3,6 +3,7 @@ import com.iwa.recruiterservice.address.Address;
 import com.iwa.recruiterservice.address.AddressService;
 import com.iwa.recruiterservice.establishment.Establishment;
 import com.iwa.recruiterservice.establishment.EstablishmentService;
+
 import com.iwa.recruiterservice.recruiter.RecruiterService;
 import com.iwa.recruiterservice.recruiter.RecruiterUserRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +24,7 @@ public class DataInitializer implements CommandLineRunner {
         this.establishmentService = establishmentService;
     }
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String ...args) throws Exception {
         if (recruiterService.getNumberOfRecruiters() < 1) {
             List<RecruiterUserRequest> listRecruiter = getRecruiterUserList();
             for (RecruiterUserRequest recruiter : listRecruiter) {

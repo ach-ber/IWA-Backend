@@ -1,14 +1,11 @@
 package com.iwa.test.chef;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +36,10 @@ public class ChefController {
         return chefService.getChefs();
     }
 
+    @GetMapping("/count")
+    public Long getNumberOfChefs() {
+        return chefService.getNumberOfChefs();
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Chef> getChefById(@PathVariable Long id){
         return chefService.getChefById(id)
@@ -62,11 +63,6 @@ public class ChefController {
         } else {
             return new ResponseEntity<>("Chef not found", HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping("/count")
-    public Long getNumberOfChefs(){
-        return chefService.getNumberOfChefs();
     }
 
 }

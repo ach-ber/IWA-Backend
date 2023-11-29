@@ -1,20 +1,107 @@
 package com.iwa.reviewservice.review;
 
+import com.iwa.reviewservice.dto.CandidateDTO;
+import com.iwa.reviewservice.dto.JobDTO;
+import com.iwa.reviewservice.dto.RecruiterDTO;
+import com.iwa.reviewservice.dto.ReviewDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
+
+    @Value("${candidates.api.url}")
+    private String candidatesApiUrl;
+
+    @Value("${jobs.api.url}")
+    private String jobsApiUrl;
+
+    @Value("${recruiters.api.url}")
+    private String recruitersApiUrl;
+
+    private final RestTemplate restTemplate;
+
     private ReviewRepository reviewRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, RestTemplate restTemplate) {
         this.reviewRepository = reviewRepository;
+        this.restTemplate = restTemplate;
+    }
+
+    public Optional<CandidateDTO> getCandidateById(String id) {
+
+        try {
+            ResponseEntity<CandidateDTO> response = restTemplate.exchange(
+                    candidatesApiUrl + "/candidates/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<CandidateDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<RecruiterDTO> getRecruiterById(Long id) {
+
+        try {
+            ResponseEntity<RecruiterDTO> response = restTemplate.exchange(
+                    recruitersApiUrl + "/api/public/recruiters/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<RecruiterDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<JobDTO> getJobById(Long id) {
+
+        try {
+            ResponseEntity<JobDTO> response = restTemplate.exchange(
+                    jobsApiUrl + "/api/public/jobs/" + id,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<JobDTO>() {
+                    }
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.ofNullable(response.getBody());
+            } else {
+                return Optional.empty();
+            }
+        } catch (HttpClientErrorException exception) {
+            exception.printStackTrace();
+            return Optional.empty();
+        }
     }
 
     @Transactional
@@ -29,12 +116,41 @@ public class ReviewService {
         return this.reviewRepository.count();
     }
 
-    public List<Review> getReviews() {
-        return this.reviewRepository.findAll();
+    public Optional<List<ReviewDTO>> getReviews() {
+        List<Review> reviews = this.reviewRepository.findAll();
+        List<ReviewDTO> res = new ArrayList<>();
+        if (reviews == null || reviews.isEmpty()) {
+            return Optional.of(Collections.emptyList());
+        } else {
+            CandidateDTO candidate;
+            JobDTO job;
+            RecruiterDTO recruiter;
+            for (Review review : reviews) {
+                System.out.println("review.getJobId() = " + review.getJobId());
+                System.out.println("review.getCandidateId() = " + review.getCandidateId());
+                System.out.println("review.getRecruiterId() = " + review.getRecruiterId());
+
+                candidate = getCandidateById(review.getCandidateId()).orElse(null);
+                job = getJobById(review.getJobId()).orElse(null);
+                recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
+                if (candidate == null || job == null || recruiter == null) {
+                    return null;
+                }
+                res.add(new ReviewDTO(review, candidate, job, recruiter));
+            }
+            return Optional.of(res);
+        }
     }
 
-    public Optional<Review> getReviewById(Long id) {
-        return this.reviewRepository.findById(id);
+    public Optional<ReviewDTO> getReviewById(Long id) {
+        Review review = this.reviewRepository.findById(id).orElseGet(null);
+        if (review == null) {
+            return Optional.empty();
+        }
+        CandidateDTO candidate = getCandidateById(review.getCandidateId()).orElse(null);
+        JobDTO job = getJobById(review.getJobId()).orElse(null);
+        RecruiterDTO recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);
+        return Optional.of(new ReviewDTO(review, candidate, job, recruiter));
     }
 
     @Transactional
@@ -102,5 +218,14 @@ public class ReviewService {
             // For example, log an error or return an empty list
             return Collections.emptyList();
         }
+    }
+
+    public List<ReviewDTO> getRecruiterReviews(Long id) {
+        if (getReviews().isEmpty()) {
+            return null;
+        }
+        return getReviews().get().stream()
+                .filter(review -> review.getReview().getRecruiterId().equals(id))
+                .collect(Collectors.toList());
     }
 }
