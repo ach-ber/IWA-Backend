@@ -5,7 +5,7 @@ API externe candidats
 ## Installation et utilisation
 
 Premièrement, un fichier de candidats nommé `fake_candidates.json` est requis dans le dossier racine.  
-Voir [../generation/README.md](../generation/README.md) pour générer ce fichier.
+Ce fichier a déjà été généré, mais vous pouvez faire le votre (voir [../generation/README.md](../generation/README.md) pour générer ce fichier.)
 
 ### Docker
 
