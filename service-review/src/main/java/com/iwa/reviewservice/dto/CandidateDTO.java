@@ -170,7 +170,25 @@ public class CandidateDTO {
         this.opinions = opinions;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "CandidateDTO{" +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", gender=" + gender +
+                ", birthDate='" + birthDate + '\'' +
+                ", citizenship='" + citizenship + '\'' +
+                ", address=" + address +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", photo='" + photo + '\'' +
+                ", cv='" + cv + '\'' +
+                ", shortBio='" + shortBio + '\'' +
+                ", references=" + references +
+                ", experiences=" + experiences +
+                ", availabilities=" + availabilities +
+                ", opinions=" + opinions +
+                '}';
+    }
 }

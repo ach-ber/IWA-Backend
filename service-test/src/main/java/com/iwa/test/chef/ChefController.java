@@ -1,5 +1,8 @@
 package com.iwa.test.chef;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chefs")
+
 public class ChefController {
 
     private final ChefService chefService;
@@ -32,6 +36,10 @@ public class ChefController {
         return chefService.getChefs();
     }
 
+    @GetMapping("/count")
+    public Long getNumberOfChefs() {
+        return chefService.getNumberOfChefs();
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Chef> getChefById(@PathVariable Long id){
         return chefService.getChefById(id)

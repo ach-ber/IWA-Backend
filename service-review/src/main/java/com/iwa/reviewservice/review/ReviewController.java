@@ -20,12 +20,9 @@ public class ReviewController {
 
     @GetMapping
     public ResponseEntity<List<ReviewDTO>> getAllReviews() {
-        Optional<List<ReviewDTO>> reviews = service.getReviews();
-        if (reviews.isPresent()) {
-            return new ResponseEntity<>(reviews.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return service.getReviews()
+            .map(reviews -> new ResponseEntity<>(reviews, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @GetMapping("/{id}")

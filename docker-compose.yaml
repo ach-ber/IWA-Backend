@@ -47,7 +47,6 @@ services:
     depends_on:
       - psql-db-jobservice
       - eureka
-
   psql-db-recruiterservice:
     image: postgres
     container_name: psql-db-recruiterservice
@@ -76,6 +75,7 @@ services:
     depends_on:
       - psql-db-recruiterservice
       - eureka
+      - service-user
   service-candidates:
     container_name: service-candidates
     build:
@@ -85,6 +85,35 @@ services:
       - '8303:8303'
     # doesn’t need neither gateway
     # nor eureka because it’s considered as an external service
+  service-user:
+    container_name: service-user
+    build:
+      context: ./service-user
+    ports:
+      - "7000:7000"
+    networks:
+      - gateway-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db-serviceuser:5432/users
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - psql-db-serviceuser
+      - eureka
+  psql-db-serviceuser:
+    image: postgres
+    volumes:
+      - data-psql-db-serviceuser:/var/lib/postgresql/data
+    container_name: psql-db-serviceuser
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=users
+    ports:
+      - '5436:5432'
+    networks:
+      - gateway-network
   service-ktlanding:
     container_name: service-ktlanding
     build:
@@ -129,3 +158,6 @@ services:
 networks:
   gateway-network:
     driver: bridge
+
+volumes:
+  data-psql-db-serviceuser:

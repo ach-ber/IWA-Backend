@@ -6,8 +6,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,14 +29,11 @@ public class JobService {
     private final RestTemplate restTemplate;
     private JobRepository jobRepository;
 
-    private JobcategoryService jobcategoryService;
-
     private MatchingService matchingService;
 
-    public JobService(JobRepository jobRepository, RestTemplate restTemplate, JobcategoryService jobcategoryService, MatchingService matchingService) {
+    public JobService(JobRepository jobRepository, RestTemplate restTemplate, MatchingService matchingService) {
         this.restTemplate = restTemplate;
         this.jobRepository = jobRepository;
-        this.jobcategoryService = jobcategoryService;
         this.matchingService = matchingService;
     }
 
@@ -53,24 +52,9 @@ public class JobService {
         }
     }
 
-    public EstablishmentDTO getEstablishmentById(Long id) {
-        ResponseEntity<EstablishmentDTO> response = restTemplate.exchange(
-                recruiterApiUrl + "/api/establishments/" + id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<EstablishmentDTO>() {}
-        );
-
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            return null;
-        }
-    }
-
     public String getEstablishmentAddress(Long establishmentAddressId) {
         ResponseEntity<String> response = restTemplate.exchange(
-                recruiterApiUrl + "/api/addresses/city/" + establishmentAddressId,
+                recruiterApiUrl + "/api/public/addresses/city/" + establishmentAddressId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<String>() {}
@@ -102,7 +86,7 @@ public class JobService {
         return matchingService.getMatchingCandidates(candidates, job);
     }
 
-    public Optional<List<Candidate>> getMatchedCandidatesOrdered(Long id, String city) {
+    public Optional<List<CandidateDTO>> getMatchedCandidatesOrdered(Long id, String city) {
         Optional<Job> job = getById(id);
         if (job == null) {
             return null;
@@ -118,7 +102,11 @@ public class JobService {
                 matchingService.setCandidateScore(candidate, job.get().getCategory_key(), getCandidateReview(candidate.getId()));
             }
             matchingCandidates.sort((c1, c2) -> Double.compare(c2.getScore(), c1.getScore()));
-            return Optional.of(matchingCandidates);
+            List<CandidateDTO> matchingCandidatesDto = new ArrayList<>();
+            for (Candidate candidate : matchingCandidates) {
+                matchingCandidatesDto.add(new CandidateDTO(candidate.getId(), candidate.getName().split(" ")[0], candidate.getName().split(" ")[1], candidate.getPhoto(), candidate.getPhone(), candidate.getEmail()));
+            }
+            return Optional.of(matchingCandidatesDto);
         }
     }
 

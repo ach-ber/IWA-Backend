@@ -1,22 +1,60 @@
 package com.iwa.recruiterservice.recruiter;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class RecruiterService {
-    private RecruiterRepository recruiterRepository;
+
+    @Value("${service.user.url}")
+    private String userServiceUrl;
+
+    private final RecruiterRepository recruiterRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public RecruiterService(RecruiterRepository recruiterRepository) {
         this.recruiterRepository = recruiterRepository;
     }
 
-    @Transactional
-    public Recruiter createRecruiter(Recruiter recruiter){
-        return this.recruiterRepository.save(recruiter);
+
+    public ResponseEntity<?> addRecruiterUser(RecruiterUserRequest recruiterUserRequest){
+        ResponseEntity<Recruiter> response;
+        Recruiter recruiter = new Recruiter(recruiterUserRequest);
+        User user = new User(recruiterUserRequest);
+        try {
+            response = new ResponseEntity<>(addRecruiter(recruiter), HttpStatus.CREATED);
+            Long id_recruiter = Objects.requireNonNull(response.getBody()).getId();
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                Map<String, String> requestBody = new HashMap<>();
+                requestBody.put("email", user.getEmail());
+                requestBody.put("role", user.getRole());
+                requestBody.put("password", user.getPassword());
+                requestBody.put("id_recruiter", id_recruiter.toString());
+                HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+                restTemplate.postForObject(userServiceUrl + "/api/public/register", request, String.class);
+            } catch (Exception e) {
+                recruiterRepository.deleteById(recruiter.getId());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating user");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating recruiter");
+        }
+        return response;
+    }
+
+    public String test(){
+        ResponseEntity<String> response = restTemplate.getForEntity("http://service-user:7000/auth/testss", String.class);
+        return response.getBody();
     }
 
     public Long getNumberOfRecruiters(){
@@ -43,12 +81,20 @@ public class RecruiterService {
     @Transactional
     public Optional<Recruiter> updateRecruiter(Long id, Recruiter updatedRecruiter) {
         Optional<Recruiter> existingRecruiter = recruiterRepository.findById(id);
-
-        if (existingRecruiter != null) {
+        if (existingRecruiter.isPresent()) {
             updatedRecruiter.setId(id);
             return Optional.of(recruiterRepository.save(updatedRecruiter));
         } else {
-            return null;
+            return Optional.empty();
+        }
+    }
+
+    public Recruiter addRecruiter(Recruiter newRecruiter) throws Exception {
+        Optional<Recruiter> existingRecruiter = recruiterRepository.findByEmail(newRecruiter.getEmail());
+        if (existingRecruiter.isPresent()) {
+            throw new Exception("Recruiter already exists");
+        } else {
+            return recruiterRepository.save(newRecruiter);
         }
     }
 }

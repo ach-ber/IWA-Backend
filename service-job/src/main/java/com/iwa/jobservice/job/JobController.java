@@ -1,16 +1,16 @@
 package com.iwa.jobservice.job;
 
 
-import com.iwa.jobservice.matching.Candidate;
 import com.iwa.jobservice.matching.CandidateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/api/public/jobs")
 public class JobController {
 
     private final JobService service;
@@ -54,24 +54,5 @@ public class JobController {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/matchedcandidates/{id}")
-    public ResponseEntity<List<Candidate>> getMatchedCandidatesOrdered(@PathVariable Long id) {
-        Job job = service.getById(id).orElse(null);
-        if (job == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        String city = service.getEstablishmentAddress(job.getEstablishment_key());
-        if (city == null || city.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return service.getMatchedCandidatesOrdered(id, city)
-                .map(candidates -> ResponseEntity.status(HttpStatus.OK).body(candidates))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping("/candidates")
-    public List<CandidateDTO> getAllCandidates() {
-        return service.getAllCandidates();
-    }
 
 }

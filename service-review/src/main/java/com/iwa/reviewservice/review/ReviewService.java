@@ -64,7 +64,7 @@ public class ReviewService {
 
         try {
             ResponseEntity<RecruiterDTO> response = restTemplate.exchange(
-                    recruitersApiUrl + "/api/recruiters/" + id,
+                    recruitersApiUrl + "/api/public/recruiters/" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<RecruiterDTO>() {
@@ -86,7 +86,7 @@ public class ReviewService {
 
         try {
             ResponseEntity<JobDTO> response = restTemplate.exchange(
-                    jobsApiUrl + "/api/jobs/" + id,
+                    jobsApiUrl + "/api/public/jobs/" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<JobDTO>() {
@@ -126,6 +126,10 @@ public class ReviewService {
             JobDTO job;
             RecruiterDTO recruiter;
             for (Review review : reviews) {
+                System.out.println("review.getJobId() = " + review.getJobId());
+                System.out.println("review.getCandidateId() = " + review.getCandidateId());
+                System.out.println("review.getRecruiterId() = " + review.getRecruiterId());
+
                 candidate = getCandidateById(review.getCandidateId()).orElse(null);
                 job = getJobById(review.getJobId()).orElse(null);
                 recruiter = getRecruiterById(review.getRecruiterId()).orElse(null);

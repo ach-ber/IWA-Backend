@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/establishments")
+@RequestMapping("/api/protected/establishments")
 public class EstablishmentController {
 
     private final EstablishmentService service;

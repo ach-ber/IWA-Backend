@@ -1,25 +1,44 @@
 package com.iwa.recruiterservice.recruiter;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
+@Data
+@AllArgsConstructor
 @Entity
+@Table(name = "recruiters")
 public class Recruiter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(max = 50)
     private String firstName;
+
+    @NotBlank
+    @Size(max = 50)
     private String lastName;
+
+    @NotBlank
+    @Size(max = 15)
     private String phone;
+
     private String email;
+
     private LocalDate createdAt;
-    private int subscription;
+
+    private String subscription;
+
     private LocalDate subscription_startDate;
+
     private LocalDate subscription_endDate;
     private int company_id;
     private int[] establishments;
@@ -33,7 +52,7 @@ public class Recruiter {
         this.email = email;
     }
 
-    public Recruiter(String firstName, String lastName, String phone, String email, LocalDate createdAt, int subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, int company_id, int[] establishments) {
+    public Recruiter(String firstName, String lastName, String phone, String email, LocalDate createdAt, String subscription, LocalDate subscription_startDate, LocalDate subscription_endDate, int company_id, int[] establishments) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -44,6 +63,19 @@ public class Recruiter {
         this.subscription_endDate = subscription_endDate;
         this.company_id = company_id;
         this.establishments = establishments;
+    }
+
+    public Recruiter(RecruiterUserRequest recruiterUserRequest) {
+        this.firstName = recruiterUserRequest.getFirstName();
+        this.lastName = recruiterUserRequest.getLastName();
+        this.phone = recruiterUserRequest.getPhone();
+        this.email = recruiterUserRequest.getEmail();
+        this.createdAt = recruiterUserRequest.getCreatedAt();
+        this.subscription = recruiterUserRequest.getSubscription();
+        this.subscription_startDate = recruiterUserRequest.getSubscription_startDate();
+        this.subscription_endDate = recruiterUserRequest.getSubscription_endDate();
+        this.company_id = recruiterUserRequest.getCompany_id();
+        this.establishments = recruiterUserRequest.getEstablishments();
     }
 
     public Long getId() {
@@ -94,11 +126,11 @@ public class Recruiter {
         this.createdAt = createdAt;
     }
 
-    public int getSubscription() {
+    public String getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(int subscription) {
+    public void setSubscription(String subscription) {
         this.subscription = subscription;
     }
 
