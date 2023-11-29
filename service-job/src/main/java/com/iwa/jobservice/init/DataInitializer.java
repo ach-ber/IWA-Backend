@@ -26,9 +26,6 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (jobService.getNumberOfJobs() < 2) {
-            List<Job> jobs = new ArrayList<>();
-            jobs.add(new Job("barman", 1690332272l, 1701670786l, "Free lunch every day", 1800f, null, null));
-            jobs.add(new Job("Web Developer Engineer", 1674688002000l, 1677341566000l, "Flexible hours, health insurance", 80000.0f, 13l, 1l));
 
             String[] categoriesList = {
                     "Agriculture, Viticulture, Pêche",
@@ -46,12 +43,13 @@ public class DataInitializer implements CommandLineRunner {
                     "SPA, Esthétique, Coiffure",
                     "Autre"
             };
-            for (String category : categoriesList) {
-                jobcategoryService.createJobcategory(new Jobcategory(category));
-            }
-            jobService.createJob(jobs);
         } else {
             System.out.println("Jobs already initialized");
+        }
+
+        if (jobService.getNumberOfJobs() < 1) {
+            jobService.createJob(new Job("Employé polyvalent", 1690332272L, 1701670786L, "Free food", 800.0f, 3L, 1L));
+            jobService.createJob(new Job("Barman", 1690332272L, 1701670786L, "Alcool à volonté", 800.0f, 3L, 3L));
         }
     }
 }

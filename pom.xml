@@ -17,7 +17,6 @@
 	<modules>
 		<module>eureka</module>
 		<module>gateway</module>
-		<module>service-test</module>
 		<module>service-job</module>
 		<module>service-recruiter</module>
         <module>service-review</module>

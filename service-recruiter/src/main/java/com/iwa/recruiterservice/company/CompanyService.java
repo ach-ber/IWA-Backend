@@ -51,4 +51,9 @@ public class CompanyService {
             return null;
         }
     }
+
+    @Transactional
+    public void deleteAll() {
+        companyRepository.deleteAll();
+    }
 }
